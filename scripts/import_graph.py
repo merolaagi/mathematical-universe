@@ -23,3 +23,6 @@ print('Edge count:',query('MATCH (:MathEntity)-[r]->(:MathEntity) RETURN count(r
 learning=ROOT/'dist/foundations.json'
 if learning.exists():
  data=json.loads(learning.read_text());ingest_nodes(data['nodes']);ingest_edges(data['edges'])
+
+reasoning=json.loads((ROOT/'dist/reasoning.json').read_text())
+ingest_nodes(reasoning['nodes']);ingest_edges(reasoning['edges'])

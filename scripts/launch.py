@@ -26,9 +26,12 @@ def main():
    count=query('MATCH (n:MathEntity) RETURN count(n)')[0]['row'][0]
    relationships=query('MATCH (:MathEntity)-[r]->(:MathEntity) RETURN count(r)')[0]['row'][0]
    learning=json.loads((ROOT/'dist/foundations.json').read_text())
-   if count!=sum(meta['counts'].values())+len(learning['nodes']) or relationships!=meta['edges']+len(learning['edges']):raise SystemExit('Import counts do not match the bundled snapshot. See README.md.')
+   reasoning=json.loads((ROOT/'dist/reasoning.json').read_text())
+   added=sum(n['id'].startswith('reason:') for n in reasoning['nodes'])
+   if count!=sum(meta['counts'].values())+len(learning['nodes'])+added or relationships!=meta['edges']+len(learning['edges'])+len(reasoning['edges']):raise SystemExit('Import counts do not match the bundled snapshot. See README.md.')
    query('MERGE (s:UniverseSnapshot {id:$id}) SET s.complete=true',{'id':meta['commit']})
-   subprocess.run([sys.executable,str(ROOT/'scripts/import_foundations.py')],check=True)
+  subprocess.run([sys.executable,str(ROOT/'scripts/import_foundations.py')],check=True)
+  subprocess.run([sys.executable,str(ROOT/'scripts/import_reasoning.py')],check=True)
  else:print('Using bundled graph data; Neo4j is optional in this mode.',flush=True)
  from serve import Handler
  from http.server import ThreadingHTTPServer

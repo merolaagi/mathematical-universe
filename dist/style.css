@@ -21,3 +21,5 @@ main.inspector-floating{grid-template-columns:260px minmax(0,1fr)}
 @media(min-width:801px){main{grid-template-rows:minmax(0,1fr)}.workspace{min-height:0;overflow:hidden}.graph-area{min-height:200px}}
 
 .learning-switch{display:block;padding:12px 0;font-size:13px;color:#704e81}.learning-switch input{width:auto;margin-right:6px}.hub{color:#704e81;font-size:13px}.learning-proof{border-left:3px solid #9268a6;padding:12px;background:#f4eff6;line-height:1.8}#detail p{line-height:1.8}
+
+.contract-status{border:1px solid #b8cbd0;padding:8px;font-size:12px}.contract-check{background:#eef4f4;padding:14px;margin:16px 0}.contract-check select{width:100%;padding:8px}.contract-check p,#contract li{font-size:14px;line-height:1.7}.blocked{color:#934c19;font-weight:600}#contract ul{padding-left:22px}

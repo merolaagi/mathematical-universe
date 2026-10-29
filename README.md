@@ -8,6 +8,7 @@ An independent web app for exploring mathematical research, proof passages, and 
 - Click graph nodes for summaries and original source details.
 - Follow extracted references, proof passages, and formalization-scope links.
 - Explore 30 shared learning concepts with elementary examples and 893 learning connections.
+- Proof workshop: 12 curated assumptions/conclusion contracts, alternative proof routes, and a declared-dependency omission check.
 - Drag, resize, float, or dock the inspector on desktop.
 - Use bundled compressed data alone, or connect to local Neo4j.
 
@@ -73,3 +74,20 @@ python3 scripts/release.py
 ## License and attribution
 
 Apache License 2.0; see `LICENSE`. The upstream OpenAI math material is distributed under Apache 2.0; its license is also retained at `dist/LICENSE-source.txt`. This project adds the explorer, extraction/import tooling, and curated learning notes. It is an independent project, not an official OpenAI product.
+
+## Proof workshop
+
+Select **Proof workshop · assumptions & routes** in the sidebar, or open the workshop from Catalan’s constant. Every contract states assumptions, a conclusion, a justification, and its status. The finite-sum example compares induction with reversing and pairing the sum. The Catalan example reconstructs the final contradiction conditional on four source propositions; those propositions remain unverified. This is not a new solution.
+
+**Try removing a premise** traverses only `USES_RESULT` edges. It reports missing declared dependencies and cycles, not mathematical validity, completeness of assumptions, or discoveries. `ALTERNATIVE_PROOF` edges represent separate routes; `SOURCE_SUPPORT` links to the pinned manuscript. Candidate edges never become proof dependencies automatically.
+
+To maintain this layer:
+
+```sh
+python3 scripts/build_reasoning.py
+python3 scripts/validate_reasoning.py
+python3 scripts/import_reasoning.py  # with Neo4j running
+python3 scripts/release.py
+```
+
+The elementary arguments and source reconstructions are curated teaching material, not machine-checked formal proofs. No claim is made that all corpus problems have structured contracts.

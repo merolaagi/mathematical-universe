@@ -1,0 +1,366 @@
+{
+  "nodes": [
+    {
+      "id": "reason:bounds",
+      "kind": "Argument",
+      "title": "Incompatible bounds: the reusable argument",
+      "summary": "These assumptions cannot all hold.",
+      "assumptions": [
+        "A real sequence xₖ is defined on the same infinite index sequence.",
+        "liminf xₖ > L; limsup xₖ < U; L ≥ U."
+      ],
+      "conclusion": "These assumptions cannot all hold.",
+      "justification": "For every real sequence, liminf xₖ ≤ limsup xₖ (allowing extended limits). The hypotheses would instead give liminf xₖ > L ≥ U > limsup xₖ. The lower limit cannot exceed the upper limit. This proves the conditional contradiction, not the estimates used to invoke it.",
+      "status": "Elementary worked argument",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run."
+    },
+    {
+      "id": "reason:order",
+      "kind": "Argument",
+      "title": "Why liminf cannot exceed limsup",
+      "summary": "liminf xₖ ≤ limsup xₖ.",
+      "assumptions": [
+        "xₖ is a real sequence."
+      ],
+      "conclusion": "liminf xₖ ≤ limsup xₖ.",
+      "justification": "Let aₙ=inf{xₖ:k≥n} and bₘ=sup{xₖ:k≥m}. For any n,m, choose k≥max(n,m); then aₙ≤xₖ≤bₘ. Taking the supremum over n and then the infimum over m gives supₙ aₙ≤infₘ bₘ, the claimed inequality. Extended real bounds are allowed.",
+      "status": "Elementary worked argument",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run."
+    },
+    {
+      "id": "reason:rational",
+      "kind": "Argument",
+      "title": "Catalan: rationality of the determinants",
+      "summary": "Δ_N is rational for every positive integer N.",
+      "assumptions": [
+        "Assume Catalan’s constant G is rational.",
+        "Use the manuscript’s specified determinant construction."
+      ],
+      "conclusion": "Δ_N is rational for every positive integer N.",
+      "justification": "The source states that each raw entry lies in ℚ+ℚG. Under the rationality assumption the entries, and hence their determinants, are rational. Establishing the claimed form of the entries remains part of the source proof.",
+      "status": "Source-dependent · unverified",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run.",
+      "family": "f005"
+    },
+    {
+      "id": "nee231fbcb57da3e3",
+      "kind": "Statement",
+      "title": "prop:rationality",
+      "summary": "Each raw entry $F_j(r)$ lies in $\\mathbb Q+\\mathbb QG$. Consequently, if $G\\in\\mathbb Q$, then $\\Delta_N\\in\\mathbb Q$ for every positive integer $N$.",
+      "url": "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Catalans-constant-is-irrational-September-24-2026/build/sections/foundations.tex#L243",
+      "family": "f005",
+      "manuscript": "mb4d2665dff54f5d4",
+      "extraction": "Source excerpt; unreviewed"
+    },
+    {
+      "id": "reason:nonzero",
+      "kind": "Argument",
+      "title": "Catalan: determinants must be nonzero",
+      "summary": "Δ_p ≠ 0 for every sufficiently large prime p.",
+      "assumptions": [
+        "Assume G is rational.",
+        "Use the manuscript’s determinant construction at N=p, for sufficiently large primes p."
+      ],
+      "conclusion": "Δ_p ≠ 0 for every sufficiently large prime p.",
+      "justification": "The manuscript claims the exact finite valuation v_p(Δ_p)=−96p. A finite valuation entails nonzero Δ_p. The claimed valuation is not checked here.",
+      "status": "Source-dependent · unverified",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run.",
+      "family": "f005"
+    },
+    {
+      "id": "n7579c450b9d726b0",
+      "kind": "Statement",
+      "title": "prop:nonvanishing",
+      "summary": "Assume that $G\\in\\mathbb Q$. For every sufficiently large prime $p$, the determinant with scale parameter $N=p$ satisfies \\begin{equation} v_p(\\Delta_p)=-96p. \\end{equation} In particular, $\\Delta_p\\ne0$ for every sufficiently large prime $p$.",
+      "url": "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Catalans-constant-is-irrational-September-24-2026/build/sections/nonvanishing.tex#L7",
+      "family": "f005",
+      "manuscript": "mb4d2665dff54f5d4",
+      "extraction": "Source excerpt; unreviewed"
+    },
+    {
+      "id": "reason:lower",
+      "kind": "Argument",
+      "title": "Catalan: conditional lower bound",
+      "summary": "Along sufficiently large primes, liminf x_p > −2.29084.",
+      "assumptions": [
+        "Assume G is rational.",
+        "Δ_N ≠ 0 along the chosen infinite sequence.",
+        "Use the same Δ_N and n=48N as in the source."
+      ],
+      "conclusion": "Along sufficiently large primes, liminf x_p > −2.29084.",
+      "justification": "Set x_p=log|Δ_p|/(48p)²−(log 2)/2. The source finite-place estimate gives the lower bound when its rationality and nonzero hypotheses hold. A nonzero argument is necessary for a real logarithm. The finite-place estimate itself is unverified here.",
+      "status": "Source-dependent · unverified",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run.",
+      "family": "f005"
+    },
+    {
+      "id": "n32b100106a8ee1b7",
+      "kind": "Statement",
+      "title": "Finite-place bound",
+      "summary": "Assume $G\\in\\mathbb Q$. Along any sequence of positive integers $N\\to\\infty$ for which $\\Delta_N\\ne0$, one has \\begin{equation} \\liminf_{N\\to\\infty} \\left(\\frac{\\log|\\Delta_N|}{n^2}-\\frac12\\log2\\right) \\ge -\\frac{8609}{4608} -\\left(\\frac12+\\frac{505}{4608}\\right)\\log2 >-2.29084. \\end{equation}",
+      "url": "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Catalans-constant-is-irrational-September-24-2026/build/sections/odd-primes.tex#L516",
+      "family": "f005",
+      "manuscript": "mb4d2665dff54f5d4",
+      "extraction": "Source excerpt; unreviewed"
+    },
+    {
+      "id": "reason:upper",
+      "kind": "Argument",
+      "title": "Catalan: source upper bound",
+      "summary": "Along that prime sequence, limsup x_p ≤ −2.290939875 < −2.2909.",
+      "assumptions": [
+        "Use the same determinant construction and normalization.",
+        "Restrict to the same sufficiently large primes with nonzero determinants."
+      ],
+      "conclusion": "Along that prime sequence, limsup x_p ≤ −2.290939875 < −2.2909.",
+      "justification": "The source asserts an upper bound along the full index sequence. Restricting to a subsequence cannot increase the limsup. Its majorant and numerical certificate have not been rechecked here.",
+      "status": "Source-dependent · unverified",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run.",
+      "family": "f005"
+    },
+    {
+      "id": "n0f0bee812328f6c4",
+      "kind": "Statement",
+      "title": "prop:real-upper",
+      "summary": "For the determinants of Equation~\\eqref{eq:determinant}, \\begin{equation} \\limsup_{N\\to\\infty}\\left(\\frac{\\log|\\Delta_N|}{n^2} -\\frac12\\log2\\right) \\le -2.290939875<-2.2909. \\end{equation} The separate bounds for the majorants in cases $\\kappa=2$ and $\\kappa=1$ are $-2.290939875$ and $-2.296789875$,…",
+      "url": "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Catalans-constant-is-irrational-September-24-2026/build/sections/certificate.tex#L7",
+      "family": "f005",
+      "manuscript": "mb4d2665dff54f5d4",
+      "extraction": "Source excerpt; unreviewed"
+    },
+    {
+      "id": "reason:catalan",
+      "kind": "Argument",
+      "title": "Catalan: the proof’s final contradiction",
+      "summary": "Conditional on the cited propositions, G cannot be rational.",
+      "assumptions": [
+        "Assume G is rational for contradiction.",
+        "Accept all four cited source propositions, with their definitions and hypotheses."
+      ],
+      "conclusion": "Conditional on the cited propositions, G cannot be rational.",
+      "justification": "The two estimates concern the same sequence x_p. The lower threshold −2.29084 is greater than the upper threshold −2.2909 by 0.00006. The incompatible-bounds argument yields a contradiction. This is a shorter explanation of the final step, not a new proof of the source propositions or a verified resolution of the research problem.",
+      "status": "Conditional reconstruction · unverified premises",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run.",
+      "family": "f005"
+    },
+    {
+      "id": "n9a2df675d6cfc9ba",
+      "kind": "Proof",
+      "title": "Proof of Theorem~\\ref{thm:main}",
+      "summary": "Suppose that $G$ is rational. Proposition~\\ref{prop:rationality} then makes $\\Delta_N$ rational for every $N$. By Proposition~\\ref{prop:nonvanishing}, $\\Delta_p\\ne0$ for every sufficiently large prime $p$. Apply the product-formula lower bound of Proposition~\\ref{prop:finite-lower} along this sequen…",
+      "url": "https://github.com/openai/math/blob/7ef5c0cc5ca4b0e072b7a050fca09ab24bc6fa3a/preprints/Catalans-constant-is-irrational-September-24-2026/build/sections/conclusion.tex#L3",
+      "family": "f005",
+      "manuscript": "mb4d2665dff54f5d4",
+      "extraction": "Source excerpt; unreviewed"
+    },
+    {
+      "id": "reason:shortcut",
+      "kind": "Candidate",
+      "title": "Candidate: can we omit nonvanishing?",
+      "summary": "Blocked: the lower-bound contract requires Δ_p ≠ 0.",
+      "assumptions": [
+        "Try to retain the same lower-bound theorem.",
+        "Omit the nonvanishing proposition without providing a replacement."
+      ],
+      "conclusion": "Blocked: the lower-bound contract requires Δ_p ≠ 0.",
+      "justification": "Rationality does not imply nonzero: zero is rational. Without nonvanishing on an infinite subsequence, x_p need not be a real sequence and the lower-bound theorem is not applicable. A replacement must establish nonvanishing on an unbounded subsequence for which both estimates hold, or supply a different estimate with different hypotheses.",
+      "status": "Blocked candidate · missing premise",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run.",
+      "family": "f005"
+    },
+    {
+      "id": "reason:sum",
+      "kind": "Claim",
+      "title": "One result, two proof routes",
+      "summary": "1+2+…+n = n(n+1)/2.",
+      "assumptions": [
+        "n is a positive integer."
+      ],
+      "conclusion": "1+2+…+n = n(n+1)/2.",
+      "justification": "Choose either proof route. Each establishes this same formula under the same integer-domain assumption. The graph does not rank brevity as mathematical simplicity.",
+      "status": "Elementary worked argument",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run."
+    },
+    {
+      "id": "reason:pairing",
+      "kind": "Argument",
+      "title": "Sum formula by reversing the sum",
+      "summary": "S=n(n+1)/2.",
+      "assumptions": [
+        "n is a positive integer.",
+        "S=1+2+…+n."
+      ],
+      "conclusion": "S=n(n+1)/2.",
+      "justification": "Write S again in reverse order: S=n+(n−1)+…+1. Add term by term. Each of the n pairs is n+1, so 2S=n(n+1). Divide by two. This is a direct argument using finite sums.",
+      "status": "Elementary worked argument",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run."
+    },
+    {
+      "id": "reason:induction",
+      "kind": "Argument",
+      "title": "Sum formula by induction",
+      "summary": "For every n≥1, 1+…+n=n(n+1)/2.",
+      "assumptions": [
+        "n ranges over positive integers."
+      ],
+      "conclusion": "For every n≥1, 1+…+n=n(n+1)/2.",
+      "justification": "Base: for n=1, 1=1·2/2. Step: assume the formula at n. Add n+1 to obtain n(n+1)/2+(n+1)=(n+1)(n+2)/2, the formula at n+1. Induction proves all positive cases.",
+      "status": "Elementary worked argument",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run."
+    },
+    {
+      "id": "reason:weakening",
+      "kind": "Candidate",
+      "title": "Can the domain be changed to all real n?",
+      "summary": "Blocked: “the first n positive integers” is not defined for arbitrary real n.",
+      "assumptions": [
+        "Keep the same finite-sum statement.",
+        "Replace positive integer n by any real number."
+      ],
+      "conclusion": "Blocked: “the first n positive integers” is not defined for arbitrary real n.",
+      "justification": "The expression n(n+1)/2 has a real-valued extension. That does not extend the original finite-sum theorem without a new definition of the left-hand side. A changed statement needs its own assumptions and argument.",
+      "status": "Blocked candidate · domain mismatch",
+      "extraction": "Curated proof contract. Dependency checks test declared structure only; no formal proof checker has been run."
+    }
+  ],
+  "edges": [
+    {
+      "source": "reason:bounds",
+      "target": "concept:limits",
+      "type": "LEARNING_PREREQUISITE",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:bounds",
+      "target": "concept:contradiction",
+      "type": "LEARNING_PREREQUISITE",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:bounds",
+      "target": "reason:order",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:rational",
+      "target": "nee231fbcb57da3e3",
+      "type": "SOURCE_SUPPORT",
+      "evidence": "Exact source statement for this contract. Source claim not independently verified."
+    },
+    {
+      "source": "reason:nonzero",
+      "target": "n7579c450b9d726b0",
+      "type": "SOURCE_SUPPORT",
+      "evidence": "Exact source statement for this contract. Source claim not independently verified."
+    },
+    {
+      "source": "reason:lower",
+      "target": "n32b100106a8ee1b7",
+      "type": "SOURCE_SUPPORT",
+      "evidence": "Exact source statement for this contract. Source claim not independently verified."
+    },
+    {
+      "source": "reason:lower",
+      "target": "reason:rational",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:lower",
+      "target": "reason:nonzero",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:upper",
+      "target": "n0f0bee812328f6c4",
+      "type": "SOURCE_SUPPORT",
+      "evidence": "Exact source statement for this contract. Source claim not independently verified."
+    },
+    {
+      "source": "reason:upper",
+      "target": "reason:nonzero",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:catalan",
+      "target": "reason:lower",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:catalan",
+      "target": "reason:upper",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:catalan",
+      "target": "reason:bounds",
+      "type": "USES_RESULT",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:catalan",
+      "target": "n9a2df675d6cfc9ba",
+      "type": "SOURCE_SUPPORT",
+      "evidence": "Exact source statement for this contract. Source claim not independently verified."
+    },
+    {
+      "source": "f005",
+      "target": "reason:catalan",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Curated conditional reconstruction of the manuscript’s conclusion."
+    },
+    {
+      "source": "reason:shortcut",
+      "target": "reason:catalan",
+      "type": "PROPOSES_CHANGE",
+      "evidence": "Candidate only; not a deduction."
+    },
+    {
+      "source": "reason:shortcut",
+      "target": "reason:nonzero",
+      "type": "MISSING_PREMISE",
+      "evidence": "An omitted condition cannot be treated as proved."
+    },
+    {
+      "source": "reason:sum",
+      "target": "reason:pairing",
+      "type": "ALTERNATIVE_PROOF",
+      "evidence": "Either complete route is sufficient, not both together."
+    },
+    {
+      "source": "reason:sum",
+      "target": "reason:induction",
+      "type": "ALTERNATIVE_PROOF",
+      "evidence": "Either complete route is sufficient, not both together."
+    },
+    {
+      "source": "reason:induction",
+      "target": "concept:induction",
+      "type": "LEARNING_PREREQUISITE",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "reason:pairing",
+      "target": "concept:counting",
+      "type": "LEARNING_PREREQUISITE",
+      "evidence": "Declared dependency in the curated argument; all listed premises are required together."
+    },
+    {
+      "source": "concept:induction",
+      "target": "reason:sum",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Worked comparison of two elementary proofs."
+    },
+    {
+      "source": "reason:weakening",
+      "target": "reason:sum",
+      "type": "PROPOSES_CHANGE",
+      "evidence": "Candidate only; domain check fails."
+    }
+  ]
+}
