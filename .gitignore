@@ -1,0 +1,10 @@
+local/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+.DS_Store
+*.log
+Publish.command
+scripts/install_route.py
