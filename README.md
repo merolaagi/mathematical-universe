@@ -91,3 +91,18 @@ python3 scripts/release.py
 ```
 
 The elementary arguments and source reconstructions are curated teaching material, not machine-checked formal proofs. No claim is made that all corpus problems have structured contracts.
+
+## Backward paths to college mathematics
+
+Use **Trace a problem to college math** in the sidebar. The current routes cover Catalan’s constant (f005), matrix multiplication exponents (f107), and relativistic Vlasov–Maxwell smoothness (f362). Seventeen intermediate concept nodes connect these topics to college calculus, linear algebra, elementary number theory, and differential equations. Each node includes an approximate level, subject, explanation, and a worked example. The expanded route stops at college foundations; **Simpler foundations** continues below that level.
+
+These are selected learning routes, not complete reductions of the research proofs. Examples from simpler equations explain methods without proving the full system’s claims. Course links provide background reading. Shared prerequisite IDs reuse existing nodes.
+
+```sh
+python3 scripts/build_paths.py
+python3 scripts/validate_paths.py
+python3 scripts/import_paths.py  # with local Neo4j running
+python3 scripts/release.py
+```
+
+Validation checks endpoints and that every expanded advanced branch reaches a college-level node without a cycle. It does not certify pedagogical completeness or prove the research claims.

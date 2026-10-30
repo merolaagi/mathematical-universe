@@ -5,7 +5,7 @@ root=Path(__file__).resolve().parents[1]/'dist'
 html=(root/'index.html').read_text()
 html=re.sub(r'<meta name="mathuni-build" content="[^"]*">','',html)
 html=re.sub(r'(style\.css|app\.js|panel\.js)\?v=[a-z0-9]+',r'\1',html)
-digest=hashlib.sha256(html.encode()+b''.join((root/p).read_bytes() for p in ['style.css','app.js','panel.js','foundations.json','reasoning.json'])).hexdigest()[:16]
+digest=hashlib.sha256(html.encode()+b''.join((root/p).read_bytes() for p in ['style.css','app.js','panel.js','foundations.json','reasoning.json','paths.json'])).hexdigest()[:16]
 html=html.replace('</head>',f'<meta name="mathuni-build" content="{digest}"></head>')
 for p in ['style.css','app.js','panel.js']:html=html.replace('"'+p+'"','"'+p+'?v='+digest+'"')
 def write(path,content):

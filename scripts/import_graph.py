@@ -26,3 +26,6 @@ if learning.exists():
 
 reasoning=json.loads((ROOT/'dist/reasoning.json').read_text())
 ingest_nodes(reasoning['nodes']);ingest_edges(reasoning['edges'])
+
+paths=json.loads((ROOT/'dist/paths.json').read_text())
+ingest_nodes(paths['nodes']);ingest_edges(paths['edges'])
