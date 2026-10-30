@@ -29,3 +29,6 @@ ingest_nodes(reasoning['nodes']);ingest_edges(reasoning['edges'])
 
 paths=json.loads((ROOT/'dist/paths.json').read_text())
 ingest_nodes(paths['nodes']);ingest_edges(paths['edges'])
+
+decomposition=json.loads((ROOT/'dist/decomposition.json').read_text())
+ingest_nodes(decomposition['nodes']);ingest_edges(decomposition['edges'])

@@ -106,3 +106,20 @@ python3 scripts/release.py
 ```
 
 Validation checks endpoints and that every expanded advanced branch reaches a college-level node without a cycle. It does not certify pedagogical completeness or prove the research claims.
+
+## Recursive argument decomposition
+
+**Decompose an argument** opens six worked breakdowns: rational determinants, the rational product formula, source-dependent nonvanishing, matrix composition, constant-speed transport, and a basic Grönwall estimate. There are 37 new argument nodes and 51 connections.
+
+Each step records assumptions, a conclusion, its justification, and required supporting results. **Break down this argument** expands the declared dependency graph. **Why does this step work?** follows one justification at a time. Shared rules use the same node IDs. **Where this explanation stops** lists definitions, foundational principles, accepted but unexpanded theorems, and unverified research premises separately.
+
+The calculus route expands the mean value theorem through Rolle’s theorem and stationary extrema. It still stops at explicitly stated standard results such as the extreme-value theorem and exponential differentiation. A nonvanishing example separates the source’s difficult valuation estimate from its elementary logical consequence. None of these examples constitutes a new verification of a research claim, a universal complexity ordering, or a complete reduction of every corpus theorem to axioms.
+
+```sh
+python3 scripts/build_decomposition.py
+python3 scripts/validate_decomposition.py
+python3 scripts/import_decomposition.py
+python3 scripts/release.py
+```
+
+Structural validation checks that derived steps have supporting nodes, every terminal node declares its boundary, the selected routes are acyclic, and the research uncertainty is retained. This is not a formal proof checker.

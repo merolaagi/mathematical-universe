@@ -1,0 +1,862 @@
+{
+  "nodes": [
+    {
+      "id": "reason:deep:rational-def",
+      "kind": "Argument",
+      "title": "What “rational” means",
+      "summary": "a/b is rational for every integer a.",
+      "assumptions": [
+        "b is a nonzero integer."
+      ],
+      "conclusion": "a/b is rational for every integer a.",
+      "justification": "This is the definition of ℚ; equality identifies fractions a/b and c/d when ad=bc. It is a definition, not a theorem about a particular constant.",
+      "status": "Definition · stopping boundary",
+      "boundary": "Definition",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:integer-arithmetic",
+      "kind": "Argument",
+      "title": "Integer arithmetic rules",
+      "summary": "Sums, products and negatives are integers; products of nonzero integers are nonzero.",
+      "assumptions": [
+        "a,b,c are integers."
+      ],
+      "conclusion": "Sums, products and negatives are integers; products of nonzero integers are nonzero.",
+      "justification": "These elementary integer facts are accepted at this boundary. A construction from natural numbers would need the corresponding induction and order arguments.",
+      "status": "Standard arithmetic boundary · stopping boundary",
+      "boundary": "Standard arithmetic boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:rational-add",
+      "kind": "Argument",
+      "title": "Why adding rationals stays rational",
+      "summary": "x+y=(ad+bc)/(bd) is rational.",
+      "assumptions": [
+        "x=a/b and y=c/d with integer a,b,c,d and b,d≠0."
+      ],
+      "conclusion": "x+y=(ad+bc)/(bd) is rational.",
+      "justification": "Integer arithmetic puts ad+bc and bd in ℤ and bd≠0. The displayed fraction therefore satisfies the definition of rational.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:rational-product",
+      "kind": "Argument",
+      "title": "Why multiplying rationals stays rational",
+      "summary": "xy=ac/(bd) and −x=(−a)/b are rational.",
+      "assumptions": [
+        "x=a/b and y=c/d with integer a,b,c,d and b,d≠0."
+      ],
+      "conclusion": "xy=ac/(bd) and −x=(−a)/b are rational.",
+      "justification": "The numerators are integers; the denominators remain nonzero. Apply the definition of ℚ.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:induction",
+      "kind": "Argument",
+      "title": "The induction principle",
+      "summary": "P(1) and ∀n≥1(P(n)⇒P(n+1)) imply ∀n≥1 P(n).",
+      "assumptions": [
+        "P(n) is a proposition about positive integers."
+      ],
+      "conclusion": "P(1) and ∀n≥1(P(n)⇒P(n+1)) imply ∀n≥1 P(n).",
+      "justification": "Induction is a foundational principle of the natural numbers. It cannot be replaced by checking finitely many examples.",
+      "status": "Foundational principle · stopping boundary",
+      "boundary": "Foundational principle",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:finite-rational",
+      "kind": "Argument",
+      "title": "Why any finite sum or product of rationals is rational",
+      "summary": "Their sum and product are rational.",
+      "assumptions": [
+        "There are finitely many rational terms."
+      ],
+      "conclusion": "Their sum and product are rational.",
+      "justification": "For one term this is immediate. Adding or multiplying one more rational preserves rationality by the two closure lemmas. Induction handles any positive number of terms. The empty sum 0 and empty product 1 are rational by definition.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:det-def",
+      "kind": "Argument",
+      "title": "Determinant as a finite signed sum",
+      "summary": "det A=Σσ sign(σ)∏ᵢAᵢ,σ(i), over permutations σ of {1,…,n}.",
+      "assumptions": [
+        "A is an n×n matrix and n≥1."
+      ],
+      "conclusion": "det A=Σσ sign(σ)∏ᵢAᵢ,σ(i), over permutations σ of {1,…,n}.",
+      "justification": "This Leibniz formula can be used to define the determinant. There are finitely many permutations and every sign is +1 or −1.",
+      "status": "Definition · stopping boundary",
+      "boundary": "Definition",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:rational-det",
+      "kind": "Argument",
+      "title": "Why rational matrix entries give a rational determinant",
+      "summary": "det A is rational.",
+      "assumptions": [
+        "Every entry of a finite square matrix A is rational."
+      ],
+      "conclusion": "det A is rational.",
+      "justification": "Each product in the determinant formula is rational. Multiplying by its integer sign preserves rationality, and the finite sum remains rational. No invertibility assumption is needed: zero determinants are rational too.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:factorization",
+      "kind": "Argument",
+      "title": "Unique prime factorization of a rational",
+      "summary": "q=±∏p p^eₚ, with integer eₚ and finite support.",
+      "assumptions": [
+        "q is a nonzero rational."
+      ],
+      "conclusion": "q=±∏p p^eₚ, with integer eₚ and finite support.",
+      "justification": "Factor the nonzero numerator and denominator into primes and subtract their exponents. This uses the fundamental theorem of arithmetic, whose proof is not expanded here.",
+      "status": "Standard theorem boundary · stopping boundary",
+      "boundary": "Standard theorem boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:valuation-def",
+      "kind": "Argument",
+      "title": "Define a prime valuation and prime absolute value",
+      "summary": "v_p(q)=eₚ and |q|_p=p^(−eₚ).",
+      "assumptions": [
+        "q≠0 is rational and p is prime."
+      ],
+      "conclusion": "v_p(q)=eₚ and |q|_p=p^(−eₚ).",
+      "justification": "Here eₚ is the exponent in the prime factorization. If valuation is extended to zero, use v_p(0)=+∞; |0|_p=0. The nonzero product formula does not apply to zero.",
+      "status": "Definition · stopping boundary",
+      "boundary": "Definition",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:finite-cancellation",
+      "kind": "Argument",
+      "title": "Cancel matching prime powers",
+      "summary": "(∏p p^eₚ)(∏p p^(−eₚ))=1.",
+      "assumptions": [
+        "Only finitely many integers eₚ are nonzero."
+      ],
+      "conclusion": "(∏p p^eₚ)(∏p p^(−eₚ))=1.",
+      "justification": "Because the products are finite, regroup each p^eₚ with p^(−eₚ). Each pair equals p⁰=1. There is no interchange of an infinite product or limit.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:product-formula",
+      "kind": "Argument",
+      "title": "Derive the rational product formula",
+      "summary": "|q|∞∏p|q|_p=1.",
+      "assumptions": [
+        "q is a nonzero rational."
+      ],
+      "conclusion": "|q|∞∏p|q|_p=1.",
+      "justification": "Prime factorization gives |q|∞=∏p p^eₚ; the prime absolute values give the reciprocal factors. Finite cancellation proves the identity. Estimating individual factors for a research construction is a separate task.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:finite-valuation",
+      "kind": "Argument",
+      "title": "A finite valuation implies nonzero",
+      "summary": "q≠0.",
+      "assumptions": [
+        "v_p(q) is defined with v_p(0)=+∞.",
+        "v_p(q) is finite."
+      ],
+      "conclusion": "q≠0.",
+      "justification": "If q=0, its valuation would be +∞ by definition, contradicting the finite value. This implication does not prove that a particular determinant has a finite valuation.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:source-valuation",
+      "kind": "Argument",
+      "title": "Research boundary: the determinant valuation",
+      "summary": "The source claims v_p(Δ_p)=−96p.",
+      "assumptions": [
+        "Assume G is rational.",
+        "Use the manuscript construction for sufficiently large primes p."
+      ],
+      "conclusion": "The source claims v_p(Δ_p)=−96p.",
+      "justification": "This is the difficult premise, not a fact proved by the elementary valuation definition. Follow the linked exact source statement and its manuscript proof. The app has not independently verified the claimed identity.",
+      "status": "Unverified source premise · NOT proved here",
+      "boundary": "Research premise boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly.",
+      "family": "f005"
+    },
+    {
+      "id": "reason:deep:source-nonzero",
+      "kind": "Argument",
+      "title": "Split the source nonvanishing claim",
+      "summary": "Δ_p≠0 for sufficiently large primes p.",
+      "assumptions": [
+        "Assume all hypotheses and the valuation conclusion of the source proposition."
+      ],
+      "conclusion": "Δ_p≠0 for sufficiently large primes p.",
+      "justification": "For each such p, −96p is finite. The elementary finite-valuation lemma then gives nonvanishing. This splits a difficult valuation estimate from an easy logical consequence; it does not eliminate the difficult estimate.",
+      "status": "Conditional reconstruction · unverified premise",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:finite-distribution",
+      "kind": "Argument",
+      "title": "Finite sums can be distributed and reordered",
+      "summary": "ΣᵢΣⱼ aᵢⱼ=ΣⱼΣᵢ aᵢⱼ, and cΣᵢaᵢ=Σᵢcaᵢ.",
+      "assumptions": [
+        "Work over a field; all sums here are finite."
+      ],
+      "conclusion": "ΣᵢΣⱼ aᵢⱼ=ΣⱼΣᵢ aᵢⱼ, and cΣᵢaᵢ=Σᵢcaᵢ.",
+      "justification": "Associativity, commutativity of addition, and distributivity justify these finite identities by induction on the number of summands. No claim about infinite-series reordering is being used.",
+      "status": "Algebraic rules boundary · stopping boundary",
+      "boundary": "Algebraic rules boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:matrix-def",
+      "kind": "Argument",
+      "title": "Coordinates define a matrix action",
+      "summary": "(Ay)ᵢ=Σₗ₌₁ᵏ Aᵢₗyₗ.",
+      "assumptions": [
+        "A is m×k and y is a k-component vector."
+      ],
+      "conclusion": "(Ay)ᵢ=Σₗ₌₁ᵏ Aᵢₗyₗ.",
+      "justification": "A matrix represents a linear map relative to chosen bases; the coordinate action is this finite sum.",
+      "status": "Definition · stopping boundary",
+      "boundary": "Definition",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:composition-expand",
+      "kind": "Argument",
+      "title": "Expand two successive matrix actions",
+      "summary": "(A(Bx))ᵢ=Σₗ₌₁ᵏΣⱼ₌₁ⁿ AᵢₗBₗⱼxⱼ.",
+      "assumptions": [
+        "A is m×k, B is k×n, and x has n components."
+      ],
+      "conclusion": "(A(Bx))ᵢ=Σₗ₌₁ᵏΣⱼ₌₁ⁿ AᵢₗBₗⱼxⱼ.",
+      "justification": "First use the matrix-action definition on A and y=Bx. Then replace yₗ by ΣⱼBₗⱼxⱼ and distribute Aᵢₗ across that finite sum.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:composition-regroup",
+      "kind": "Argument",
+      "title": "Identify the matrix of a composition",
+      "summary": "A(Bx)=Cx where Cᵢⱼ=ΣₗAᵢₗBₗⱼ.",
+      "assumptions": [
+        "A is m×k, B is k×n, and x has n components."
+      ],
+      "conclusion": "A(Bx)=Cx where Cᵢⱼ=ΣₗAᵢₗBₗⱼ.",
+      "justification": "Reorder the finite double sum to group each coefficient of xⱼ: Σⱼ(ΣₗAᵢₗBₗⱼ)xⱼ. By the matrix-action definition this is Cx. This explains the multiplication formula; it says nothing about optimal algorithmic complexity.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:chain-rule",
+      "kind": "Argument",
+      "title": "The multivariable chain rule",
+      "summary": "d/dt u(t,γ(t))=u_t(t,γ(t))+∇u(t,γ(t))·γ′(t).",
+      "assumptions": [
+        "u and the curve γ are continuously differentiable on the relevant domain."
+      ],
+      "conclusion": "d/dt u(t,γ(t))=u_t(t,γ(t))+∇u(t,γ(t))·γ′(t).",
+      "justification": "This is an accepted calculus theorem at the current boundary. A proof proceeds from differentiability’s linear approximation and a remainder tending to zero. That remainder proof is not expanded here.",
+      "status": "Standard theorem boundary · stopping boundary",
+      "boundary": "Standard theorem boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:zero-derivative",
+      "kind": "Argument",
+      "title": "Zero derivative implies constant on an interval",
+      "summary": "h(b)=h(a).",
+      "assumptions": [
+        "h is continuous on [a,b], differentiable on (a,b), and h′=0 there."
+      ],
+      "conclusion": "h(b)=h(a).",
+      "justification": "The mean value theorem gives h(b)−h(a)=h′(c)(b−a)=0 for some c∈(a,b). The mean value theorem is expanded below.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:transport-curve",
+      "kind": "Argument",
+      "title": "Follow a straight characteristic",
+      "summary": "d/dt u(t,x₀+ct)=0.",
+      "assumptions": [
+        "u is C¹ and solves u_t+c u_x=0.",
+        "c is constant and x(t)=x₀+ct."
+      ],
+      "conclusion": "d/dt u(t,x₀+ct)=0.",
+      "justification": "The curve has x′(t)=c. Substitute into the chain rule and then into the assumed PDE. Its left side is exactly u_t+c u_x, which vanishes.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:transport-solution",
+      "kind": "Argument",
+      "title": "Recover the transport solution",
+      "summary": "u(t,x)=u₀(x−ct).",
+      "assumptions": [
+        "u is a C¹ solution of u_t+c u_x=0 with u(0,x)=u₀(x).",
+        "Characteristic segments lie in the solution domain."
+      ],
+      "conclusion": "u(t,x)=u₀(x−ct).",
+      "justification": "The previous step makes u constant along each characteristic, so u(t,x₀+ct)=u₀(x₀). Set x₀=x−ct. Conversely, for C¹ u₀, differentiating u₀(x−ct) checks the PDE and initial value. This handles constant-speed transport, not the full nonlinear coupled system.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:product-rule",
+      "kind": "Argument",
+      "title": "Product and exponential differentiation",
+      "summary": "(fg)′=f′g+fg′ and (e^(−Ct))′=−Ce^(−Ct).",
+      "assumptions": [
+        "f,g are differentiable, and C is constant."
+      ],
+      "conclusion": "(fg)′=f′g+fg′ and (e^(−Ct))′=−Ce^(−Ct).",
+      "justification": "Combine the product-rule derivation with the separately stated exponential derivative. The exponential fact remains an explicit boundary.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:nonpositive-derivative",
+      "kind": "Argument",
+      "title": "Nonpositive derivative gives a nonincreasing function",
+      "summary": "F(t)≤F(0) for 0≤t≤T.",
+      "assumptions": [
+        "F is continuous on [0,T], differentiable on (0,T), and F′≤0."
+      ],
+      "conclusion": "F(t)≤F(0) for 0≤t≤T.",
+      "justification": "For t>0, the mean value theorem gives F(t)−F(0)=tF′(c)≤0. Equality at t=0 is immediate. Follow the mean-value node for its derivation.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:weighted-energy",
+      "kind": "Argument",
+      "title": "Remove exponential growth by a weight",
+      "summary": "F=e^(−Ct)E has F′≤0.",
+      "assumptions": [
+        "E is differentiable and E′≤CE; C is constant."
+      ],
+      "conclusion": "F=e^(−Ct)E has F′≤0.",
+      "justification": "Product differentiation gives F′=e^(−Ct)(E′−CE). The assumed inequality makes the bracket nonpositive; the exponential is positive, so multiplying preserves its sign.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:gronwall",
+      "kind": "Argument",
+      "title": "Derive a basic Grönwall bound",
+      "summary": "E(t)≤E(0)e^(Ct) for 0≤t≤T.",
+      "assumptions": [
+        "E is continuous on [0,T], differentiable on (0,T), and E′≤CE.",
+        "C is a fixed real constant."
+      ],
+      "conclusion": "E(t)≤E(0)e^(Ct) for 0≤t≤T.",
+      "justification": "The weighted quantity F is nonincreasing, hence e^(−Ct)E(t)≤E(0). Multiply by positive e^(Ct). The bound is conditional on an established differential inequality; deriving one for a research PDE is separate work.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:matrix-frontier",
+      "kind": "Argument",
+      "title": "Research boundary: improved multiplication exponent",
+      "summary": "An improved exponent needs a valid construction and a justified complexity bound.",
+      "assumptions": [
+        "Use the exact algorithmic model and constructions of the manuscript."
+      ],
+      "conclusion": "An improved exponent needs a valid construction and a justified complexity bound.",
+      "justification": "The coordinate identity proves what multiplication computes. It does not construct a faster algorithm. Tensor decompositions, their validity over the specified field, and their asymptotic analysis remain unexpanded research work.",
+      "status": "Research premise boundary · stopping boundary",
+      "boundary": "Research premise boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:pde-frontier",
+      "kind": "Argument",
+      "title": "Research boundary: global smoothness",
+      "summary": "Global smoothness needs a valid continuation argument with sufficiently strong a priori control.",
+      "assumptions": [
+        "Use the actual nonlinear Vlasov–Maxwell system and its initial-data assumptions."
+      ],
+      "conclusion": "Global smoothness needs a valid continuation argument with sufficiently strong a priori control.",
+      "justification": "A free-transport solution or a generic Grönwall lemma does not supply those estimates. The actual force bounds, regularity requirements, and continuation theorem must be checked in the manuscript. This boundary marks missing work rather than a proved implication.",
+      "status": "Research premise boundary · stopping boundary",
+      "boundary": "Research premise boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:derivative-def",
+      "kind": "Argument",
+      "title": "Derivative as a first-order approximation",
+      "summary": "f(a+h)=f(a)+f′(a)h+r(h), with r(h)/h→0.",
+      "assumptions": [
+        "f is differentiable at a."
+      ],
+      "conclusion": "f(a+h)=f(a)+f′(a)h+r(h), with r(h)/h→0.",
+      "justification": "Rewrite the derivative limit by defining r(h)=f(a+h)−f(a)−f′(a)h. The defining difference quotient says exactly that r(h)/h tends to zero. Set r(0)=0.",
+      "status": "Definition · stopping boundary",
+      "boundary": "Definition",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:limit-rules",
+      "kind": "Argument",
+      "title": "Arithmetic of limits and differentiability",
+      "summary": "Limits preserve finite sums and products; differentiability implies continuity.",
+      "assumptions": [
+        "All named limits exist as finite real numbers."
+      ],
+      "conclusion": "Limits preserve finite sums and products; differentiability implies continuity.",
+      "justification": "These real-analysis results are accepted at this boundary. They follow from epsilon-delta estimates. Their hypotheses exclude expressions such as an undefined infinity times zero.",
+      "status": "Standard theorem boundary · stopping boundary",
+      "boundary": "Standard theorem boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:product-rule-proof",
+      "kind": "Argument",
+      "title": "Derive the product rule",
+      "summary": "(fg)′(a)=f′(a)g(a)+f(a)g′(a).",
+      "assumptions": [
+        "f and g are differentiable at a."
+      ],
+      "conclusion": "(fg)′(a)=f′(a)g(a)+f(a)g′(a).",
+      "justification": "For h≠0, write [f(a+h)g(a+h)−f(a)g(a)]/h as ([f(a+h)−f(a)]/h)g(a+h)+f(a)([g(a+h)−g(a)]/h). Take limits, using g(a+h)→g(a).",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:exp-derivative",
+      "kind": "Argument",
+      "title": "Derivative and positivity of the exponential",
+      "summary": "e^(−Ct)>0 and its derivative is −Ce^(−Ct).",
+      "assumptions": [
+        "t and C are real; C is constant."
+      ],
+      "conclusion": "e^(−Ct)>0 and its derivative is −Ce^(−Ct).",
+      "justification": "This standard exponential-function fact remains a boundary. A derivation depends on how exp is defined, for example by a power series or as an inverse of an integral-defined logarithm.",
+      "status": "Standard theorem boundary · stopping boundary",
+      "boundary": "Standard theorem boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:extreme-value",
+      "kind": "Argument",
+      "title": "Extreme-value theorem on a closed interval",
+      "summary": "h attains both its maximum and minimum on [a,b].",
+      "assumptions": [
+        "h is continuous on a finite closed interval [a,b]."
+      ],
+      "conclusion": "h attains both its maximum and minimum on [a,b].",
+      "justification": "This is a completeness-based theorem of real analysis. It is not implied by differentiability rules alone. Compactness of [a,b] is one route to its proof, left as the next explicit boundary.",
+      "status": "Standard theorem boundary · stopping boundary",
+      "boundary": "Standard theorem boundary",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:stationary-extremum",
+      "kind": "Argument",
+      "title": "Derivative at an interior extremum",
+      "summary": "h′(c)=0.",
+      "assumptions": [
+        "h is differentiable at an interior local maximum c."
+      ],
+      "conclusion": "h′(c)=0.",
+      "justification": "For small positive t, [h(c+t)−h(c)]/t≤0; for small negative t the quotient is ≥0. Since both sides tend to the same derivative, it is both ≤0 and ≥0, hence zero. At a local minimum reverse the signs.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:rolle",
+      "kind": "Argument",
+      "title": "Rolle’s theorem",
+      "summary": "There exists c∈(a,b) with h′(c)=0.",
+      "assumptions": [
+        "h is continuous on [a,b], differentiable on (a,b), a<b, and h(a)=h(b)."
+      ],
+      "conclusion": "There exists c∈(a,b) with h′(c)=0.",
+      "justification": "If h is constant, every interior derivative is zero. Otherwise some value differs from the common endpoint value. A maximum or minimum attained by the extreme-value theorem must then occur in the interior. The stationary-extremum result gives zero derivative there.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    },
+    {
+      "id": "reason:deep:mean-value",
+      "kind": "Argument",
+      "title": "Derive the mean value theorem",
+      "summary": "There is c∈(a,b) with h(b)−h(a)=h′(c)(b−a).",
+      "assumptions": [
+        "h is continuous on [a,b], differentiable on (a,b), and a<b."
+      ],
+      "conclusion": "There is c∈(a,b) with h(b)−h(a)=h′(c)(b−a).",
+      "justification": "Set m=(h(b)−h(a))/(b−a) and g(x)=h(x)−m(x−a). The endpoints of g agree. Rolle gives g′(c)=0, hence h′(c)=m. Multiply by b−a. Differentiation of the linear term follows directly from the derivative definition.",
+      "status": "Elementary argument · not machine checked",
+      "boundary": "Derived step",
+      "extraction": "Curated logical decomposition. All outgoing Requires result premises are needed together. Definitions and unexpanded theorem or research boundaries are labeled explicitly."
+    }
+  ],
+  "edges": [
+    {
+      "source": "reason:deep:rational-add",
+      "target": "reason:deep:rational-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rational-add",
+      "target": "reason:deep:integer-arithmetic",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rational-product",
+      "target": "reason:deep:rational-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rational-product",
+      "target": "reason:deep:integer-arithmetic",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:finite-rational",
+      "target": "reason:deep:rational-add",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:finite-rational",
+      "target": "reason:deep:rational-product",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:finite-rational",
+      "target": "reason:deep:induction",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rational-det",
+      "target": "reason:deep:det-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rational-det",
+      "target": "reason:deep:finite-rational",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "college:determinants",
+      "target": "reason:deep:rational-det",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:rational",
+      "target": "reason:deep:rational-det",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:deep:finite-cancellation",
+      "target": "reason:deep:integer-arithmetic",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:product-formula",
+      "target": "reason:deep:factorization",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:product-formula",
+      "target": "reason:deep:valuation-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:product-formula",
+      "target": "reason:deep:finite-cancellation",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "college:product",
+      "target": "reason:deep:product-formula",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:deep:finite-valuation",
+      "target": "reason:deep:valuation-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:source-valuation",
+      "target": "n7579c450b9d726b0",
+      "type": "SOURCE_SUPPORT",
+      "evidence": "Pinned source proposition asserts the valuation; independent verification remains outstanding."
+    },
+    {
+      "source": "reason:deep:source-nonzero",
+      "target": "reason:deep:source-valuation",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:source-nonzero",
+      "target": "reason:deep:finite-valuation",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:nonzero",
+      "target": "reason:deep:source-nonzero",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "college:valuation",
+      "target": "reason:deep:source-nonzero",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:deep:composition-expand",
+      "target": "reason:deep:matrix-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:composition-expand",
+      "target": "reason:deep:finite-distribution",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:composition-regroup",
+      "target": "reason:deep:composition-expand",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:composition-regroup",
+      "target": "reason:deep:finite-distribution",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:composition-regroup",
+      "target": "reason:deep:matrix-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "college:matmul",
+      "target": "reason:deep:composition-regroup",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:deep:transport-curve",
+      "target": "reason:deep:chain-rule",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:transport-solution",
+      "target": "reason:deep:transport-curve",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:transport-solution",
+      "target": "reason:deep:zero-derivative",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "college:characteristics",
+      "target": "reason:deep:transport-solution",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:deep:weighted-energy",
+      "target": "reason:deep:product-rule",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:gronwall",
+      "target": "reason:deep:weighted-energy",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:gronwall",
+      "target": "reason:deep:nonpositive-derivative",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "college:gronwall",
+      "target": "reason:deep:gronwall",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "college:exponent",
+      "target": "reason:deep:matrix-frontier",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "college:kinetic",
+      "target": "reason:deep:pde-frontier",
+      "type": "HAS_ARGUMENT",
+      "evidence": "Detailed elementary argument or explicitly conditional source reconstruction."
+    },
+    {
+      "source": "reason:deep:product-rule-proof",
+      "target": "reason:deep:derivative-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:product-rule-proof",
+      "target": "reason:deep:limit-rules",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:stationary-extremum",
+      "target": "reason:deep:derivative-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:stationary-extremum",
+      "target": "reason:deep:limit-rules",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rolle",
+      "target": "reason:deep:extreme-value",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:rolle",
+      "target": "reason:deep:stationary-extremum",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:mean-value",
+      "target": "reason:deep:rolle",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:mean-value",
+      "target": "reason:deep:derivative-def",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:mean-value",
+      "target": "reason:deep:limit-rules",
+      "type": "USES_RESULT",
+      "evidence": "Required justification in this curated argument; mathematical assumptions must also be satisfied."
+    },
+    {
+      "source": "reason:deep:zero-derivative",
+      "target": "reason:deep:mean-value",
+      "type": "USES_RESULT",
+      "evidence": "Explicitly expanded supporting theorem or rule."
+    },
+    {
+      "source": "reason:deep:nonpositive-derivative",
+      "target": "reason:deep:mean-value",
+      "type": "USES_RESULT",
+      "evidence": "Explicitly expanded supporting theorem or rule."
+    },
+    {
+      "source": "reason:deep:product-rule",
+      "target": "reason:deep:product-rule-proof",
+      "type": "USES_RESULT",
+      "evidence": "Explicitly expanded supporting theorem or rule."
+    },
+    {
+      "source": "reason:deep:product-rule",
+      "target": "reason:deep:exp-derivative",
+      "type": "USES_RESULT",
+      "evidence": "Explicitly expanded supporting theorem or rule."
+    }
+  ],
+  "roots": [
+    {
+      "id": "reason:deep:rational-det",
+      "title": "Rational determinants → finite arithmetic"
+    },
+    {
+      "id": "reason:deep:product-formula",
+      "title": "Product formula → prime powers"
+    },
+    {
+      "id": "reason:deep:source-nonzero",
+      "title": "Research nonvanishing → difficult premise + easy implication"
+    },
+    {
+      "id": "reason:deep:composition-regroup",
+      "title": "Matrix composition → coordinate sums"
+    },
+    {
+      "id": "reason:deep:transport-solution",
+      "title": "Transport equation → chain rule"
+    },
+    {
+      "id": "reason:deep:gronwall",
+      "title": "Growth bound → derivatives and order"
+    }
+  ]
+}
