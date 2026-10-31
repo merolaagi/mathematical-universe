@@ -5,6 +5,7 @@
     {
       "id": "Implication",
       "title": "Compose two proof steps",
+      "category": "Getting started",
       "nodeIds": [
         "reason:deep:gronwall",
         "concept:logic"
@@ -18,6 +19,7 @@
     {
       "id": "Contradiction",
       "title": "Incompatible integer bounds",
+      "category": "Getting started",
       "nodeIds": [
         "reason:bounds",
         "reason:catalan",
@@ -32,6 +34,7 @@
     {
       "id": "Nonvanishing",
       "title": "A finite valuation implies nonzero",
+      "category": "Getting started",
       "nodeIds": [
         "reason:nonzero",
         "reason:deep:source-nonzero",
@@ -46,6 +49,7 @@
     {
       "id": "Induction",
       "title": "The finite-sum formula by induction",
+      "category": "Getting started",
       "nodeIds": [
         "reason:sum",
         "reason:induction",
@@ -60,6 +64,7 @@
     {
       "id": "SharedLemma",
       "title": "Reuse a lemma in two proofs",
+      "category": "Getting started",
       "nodeIds": [
         "concept:integers",
         "concept:graphs"
@@ -69,6 +74,480 @@
       "file": "lean/SharedLemma.lean",
       "sha256": "4f81953c8b7278dd3ddf42fc7f86741037b5dd803078c5e8a97d0b348cef10c3",
       "compilerOutput": "'successor_nonzero' depends on axioms: [propext, Quot.sound]\n'square_positive_input_nonzero' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "AndComm",
+      "title": "Conjunction: rearrange two assumptions",
+      "category": "Logic",
+      "nodeIds": [
+        "concept:logic"
+      ],
+      "scope": "An exact propositional equivalence; no mathematical premises are supplied implicitly.",
+      "code": "import Std\n\ntheorem result (P Q : Prop) : (P ∧ Q) ↔ (Q ∧ P) := by\n  constructor\n  · intro h; exact ⟨h.2, h.1⟩\n  · intro h; exact ⟨h.2, h.1⟩\n\n#print axioms result\n",
+      "file": "lean/AndComm.lean",
+      "sha256": "63696e4818507534052f34100cd2d2f0a25dd0d1af11141bf9d6229d098a7480",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "OrComm",
+      "title": "Disjunction: reason by cases",
+      "category": "Logic",
+      "nodeIds": [
+        "concept:logic"
+      ],
+      "scope": "An exact propositional equivalence proved by considering both cases.",
+      "code": "import Std\n\ntheorem result (P Q : Prop) : (P ∨ Q) ↔ (Q ∨ P) := by\n  constructor\n  · intro h\n    cases h with\n    | inl hp => exact Or.inr hp\n    | inr hq => exact Or.inl hq\n  · intro h\n    cases h with\n    | inl hq => exact Or.inr hq\n    | inr hp => exact Or.inl hp\n\n#print axioms result\n",
+      "file": "lean/OrComm.lean",
+      "sha256": "f0e186b248a99606f9d5d6dac497d921e6f618e84afe07603c2d5b0557318132",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Contrapositive",
+      "title": "Contrapositive of an implication",
+      "category": "Logic",
+      "nodeIds": [
+        "concept:contradiction",
+        "concept:logic"
+      ],
+      "scope": "Proves the forward contraposition rule constructively.",
+      "code": "import Std\n\ntheorem result (P Q : Prop) (h : P → Q) : ¬ Q → ¬ P := by\n  intro notQ proofP\n  exact notQ (h proofP)\n\n#print axioms result\n",
+      "file": "lean/Contrapositive.lean",
+      "sha256": "f313ac7848ad438dc115e3c3f0eca8ec3ee63713a5fe1b1b9dc35f3a9331400b",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "DoubleNegation",
+      "title": "Classical proof by contradiction",
+      "category": "Logic",
+      "nodeIds": [
+        "concept:contradiction"
+      ],
+      "scope": "Double-negation elimination uses classical reasoning; inspect the printed dependencies.",
+      "code": "import Std\n\ntheorem result (P : Prop) : (¬ ¬ P) → P := by\n  classical\n  intro h\n  by_cases hp : P\n  · exact hp\n  · exact False.elim (h hp)\n\n#print axioms result\n",
+      "file": "lean/DoubleNegation.lean",
+      "sha256": "a0c6882cdbae17bc4da8e1da4351715160310ddb2868ec3c4f876de140ab729a",
+      "compilerOutput": "'result' depends on axioms: [propext, Classical.choice, Quot.sound]"
+    },
+    {
+      "id": "DeMorgan",
+      "title": "Negating a disjunction",
+      "category": "Logic",
+      "nodeIds": [
+        "concept:logic",
+        "concept:contradiction"
+      ],
+      "scope": "This De Morgan law is constructive.",
+      "code": "import Std\n\ntheorem result (P Q : Prop) : ¬ (P ∨ Q) ↔ (¬ P ∧ ¬ Q) := by\n  constructor\n  · intro h\n    exact ⟨fun hp => h (Or.inl hp), fun hq => h (Or.inr hq)⟩\n  · intro h hor\n    cases hor with\n    | inl hp => exact h.1 hp\n    | inr hq => exact h.2 hq\n\n#print axioms result\n",
+      "file": "lean/DeMorgan.lean",
+      "sha256": "87f03f6e76892730c822c17379fc563557ee8b25f3ff8de4f3f87fa7e0daabd3",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Witness",
+      "title": "Existence requires a witness",
+      "category": "Logic",
+      "nodeIds": [
+        "concept:logic",
+        "concept:integers"
+      ],
+      "scope": "Produces a concrete natural-number witness for a universally quantified existence statement.",
+      "code": "import Std\n\ntheorem result (n : Nat) : ∃ m : Nat, n < m := by\n  exact ⟨n + 1, by omega⟩\n\n#print axioms result\n",
+      "file": "lean/Witness.lean",
+      "sha256": "0bd457b84e99a0b234ce71ccd30c624dea0f3bf0362d112f5cd5741f5e7ad2eb",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "Intersection",
+      "title": "Set intersection is commutative",
+      "category": "Sets",
+      "nodeIds": [
+        "concept:sets"
+      ],
+      "scope": "Sets are predicates α → Prop; the conclusion is pointwise membership equivalence.",
+      "code": "import Std\n\ntheorem result {α : Type} (A B : α → Prop) (x : α) :\n    (A x ∧ B x) ↔ (B x ∧ A x) := by\n  constructor\n  · intro h; exact ⟨h.2, h.1⟩\n  · intro h; exact ⟨h.2, h.1⟩\n\n#print axioms result\n",
+      "file": "lean/Intersection.lean",
+      "sha256": "d23d5cd7939da3d5e9b3a112c831b82eab9a2df5cdc46419bd4706b689ed9bca",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Union",
+      "title": "Set union is associative",
+      "category": "Sets",
+      "nodeIds": [
+        "concept:sets"
+      ],
+      "scope": "Pointwise associativity for predicate-based sets.",
+      "code": "import Std\n\ntheorem result {α : Type} (A B C : α → Prop) (x : α) :\n    ((A x ∨ B x) ∨ C x) ↔ (A x ∨ (B x ∨ C x)) := by\n  simp only [or_assoc]\n\n#print axioms result\n",
+      "file": "lean/Union.lean",
+      "sha256": "beeeeae99d9d9822d7bda3d6669524655128fcb054260544ea8c806b18302463",
+      "compilerOutput": "'result' depends on axioms: [propext]"
+    },
+    {
+      "id": "DistributeSets",
+      "title": "Intersection distributes over union",
+      "category": "Sets",
+      "nodeIds": [
+        "concept:sets"
+      ],
+      "scope": "An exact membership equivalence; the hypotheses describe membership in three sets.",
+      "code": "import Std\n\ntheorem result {α : Type} (A B C : α → Prop) (x : α) :\n    (A x ∧ (B x ∨ C x)) ↔ ((A x ∧ B x) ∨ (A x ∧ C x)) := by\n  constructor\n  · intro h\n    cases h.2 with\n    | inl hb => exact Or.inl ⟨h.1, hb⟩\n    | inr hc => exact Or.inr ⟨h.1, hc⟩\n  · intro h\n    cases h with\n    | inl hab => exact ⟨hab.1, Or.inl hab.2⟩\n    | inr hac => exact ⟨hac.1, Or.inr hac.2⟩\n\n#print axioms result\n",
+      "file": "lean/DistributeSets.lean",
+      "sha256": "85f25f978b2f9bddcd587d3b4e49b8cfef1a845a0e5f7cee36bed8d5f318b24f",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Subset",
+      "title": "Subset relations compose",
+      "category": "Sets",
+      "nodeIds": [
+        "concept:sets",
+        "concept:functions"
+      ],
+      "scope": "Uses the pointwise definition of subset inclusion.",
+      "code": "import Std\n\ntheorem result {α : Type} (A B C : α → Prop)\n    (ab : ∀ x, A x → B x) (bc : ∀ x, B x → C x) : ∀ x, A x → C x := by\n  intro x hx\n  exact bc x (ab x hx)\n\n#print axioms result\n",
+      "file": "lean/Subset.lean",
+      "sha256": "09b5fa19e3d769d2f6911e215697cbb3dbea7780152bf474990251a397c401c1",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Preimage",
+      "title": "Preimages preserve intersections",
+      "category": "Sets",
+      "nodeIds": [
+        "concept:sets",
+        "concept:functions"
+      ],
+      "scope": "The preimage membership identity reduces to definitions.",
+      "code": "import Std\n\ndef preimage {α β : Type} (f : α → β) (S : β → Prop) : α → Prop :=\n  fun x => S (f x)\n\ntheorem result {α β : Type} (f : α → β) (A B : β → Prop) (x : α) :\n    preimage f (fun y => A y ∧ B y) x ↔ (preimage f A x ∧ preimage f B x) := by\n  rfl\n\n#print axioms result\n",
+      "file": "lean/Preimage.lean",
+      "sha256": "e2fe4d7a6808c412d049d08738dd5495da13a3f3022b8d12d2d71aa8530a87ff",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "InjectiveCompose",
+      "title": "Composition preserves injectivity",
+      "category": "Functions",
+      "nodeIds": [
+        "concept:functions"
+      ],
+      "scope": "Injectivity is stated explicitly as an equality implication.",
+      "code": "import Std\n\ntheorem result {α β γ : Type} (f : α → β) (g : β → γ)\n    (hf : ∀ a b, f a = f b → a = b)\n    (hg : ∀ a b, g a = g b → a = b) :\n    ∀ a b, g (f a) = g (f b) → a = b := by\n  intro a b h\n  exact hf a b (hg (f a) (f b) h)\n\n#print axioms result\n",
+      "file": "lean/InjectiveCompose.lean",
+      "sha256": "39bbd694a67140061e288b2db01312c14191d8a6b5c885f5d4a707162ff26222",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "SurjectiveCompose",
+      "title": "Composition preserves surjectivity",
+      "category": "Functions",
+      "nodeIds": [
+        "concept:functions"
+      ],
+      "scope": "Surjectivity is proved by constructing preimages in reverse order.",
+      "code": "import Std\n\ntheorem result {α β γ : Type} (f : α → β) (g : β → γ)\n    (hf : ∀ b, ∃ a, f a = b) (hg : ∀ c, ∃ b, g b = c) :\n    ∀ c, ∃ a, g (f a) = c := by\n  intro c\n  obtain ⟨b, hb⟩ := hg c\n  obtain ⟨a, ha⟩ := hf b\n  exact ⟨a, by rw [ha, hb]⟩\n\n#print axioms result\n",
+      "file": "lean/SurjectiveCompose.lean",
+      "sha256": "b3031232ec76a15a65d3a34f3f5a11667241c1c3feeef0b3c49b4bb7f63d7d27",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "LeftInverse",
+      "title": "A left inverse forces injectivity",
+      "category": "Functions",
+      "nodeIds": [
+        "concept:functions",
+        "concept:linear"
+      ],
+      "scope": "An elementary function theorem, not a proof that a particular matrix has an inverse.",
+      "code": "import Std\n\ntheorem result {α β : Type} (f : α → β) (g : β → α)\n    (left : ∀ a, g (f a) = a) (a b : α) (h : f a = f b) : a = b := by\n  have eq := congrArg g h\n  simpa only [left] using eq\n\n#print axioms result\n",
+      "file": "lean/LeftInverse.lean",
+      "sha256": "c6e859f439009cb4aec76088ad7f1c76345caea867fc2f7982c134386da3a0e1",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "RightInverse",
+      "title": "A right inverse forces surjectivity",
+      "category": "Functions",
+      "nodeIds": [
+        "concept:functions"
+      ],
+      "scope": "A right inverse supplies the required witness directly.",
+      "code": "import Std\n\ntheorem result {α β : Type} (f : α → β) (g : β → α)\n    (right : ∀ b, f (g b) = b) : ∀ b, ∃ a, f a = b := by\n  intro b\n  exact ⟨g b, right b⟩\n\n#print axioms result\n",
+      "file": "lean/RightInverse.lean",
+      "sha256": "994c0322affd720d9a4055d2e5c8b8463b37c57f3d107a35d45e5a4d46309bae",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "ComposeAssoc",
+      "title": "Function composition is associative",
+      "category": "Functions",
+      "nodeIds": [
+        "concept:functions",
+        "college:matmul"
+      ],
+      "scope": "A pointwise composition identity. It does not certify a matrix algorithm.",
+      "code": "import Std\n\ntheorem result {α β γ δ : Type} (f : α → β) (g : β → γ) (h : γ → δ) :\n    (fun x => h (g (f x))) = (fun x => (fun y => h (g y)) (f x)) := by\n  rfl\n\n#print axioms result\n",
+      "file": "lean/ComposeAssoc.lean",
+      "sha256": "67c12d4a05a595639477bd283eb89c95229436cc1bca9260f87d3c2d058d7fc9",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Divisibility",
+      "title": "Divisibility is transitive",
+      "category": "Arithmetic",
+      "nodeIds": [
+        "concept:integers",
+        "concept:prime"
+      ],
+      "scope": "Uses a divides b as existence of a natural-number multiplier.",
+      "code": "import Std\n\ntheorem result (a b c : Nat) (hab : ∃ k, b = a * k)\n    (hbc : ∃ k, c = b * k) : ∃ k, c = a * k := by\n  obtain ⟨k, hk⟩ := hab\n  obtain ⟨l, hl⟩ := hbc\n  exact ⟨k * l, by rw [hl, hk, Nat.mul_assoc]⟩\n\n#print axioms result\n",
+      "file": "lean/Divisibility.lean",
+      "sha256": "9ecabb14404d1414e5fbd15afc4294e91e9fdf9608c658537a972c8acf0dd73d",
+      "compilerOutput": "'result' depends on axioms: [propext]"
+    },
+    {
+      "id": "EvenSum",
+      "title": "The sum of two even numbers is even",
+      "category": "Arithmetic",
+      "nodeIds": [
+        "concept:integers"
+      ],
+      "scope": "Evenness is expressed by an explicit natural-number witness.",
+      "code": "import Std\n\ntheorem result (a b : Nat) (ha : ∃ k, a = 2 * k)\n    (hb : ∃ k, b = 2 * k) : ∃ k, a + b = 2 * k := by\n  obtain ⟨k, hk⟩ := ha\n  obtain ⟨l, hl⟩ := hb\n  exact ⟨k + l, by rw [hk, hl, Nat.mul_add]⟩\n\n#print axioms result\n",
+      "file": "lean/EvenSum.lean",
+      "sha256": "9becbe51788dc52ccd0b2669bc9ab86019d23c4ac65836631c949961bbd37aff",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Congruence",
+      "title": "Adding congruences modulo a fixed number",
+      "category": "Arithmetic",
+      "nodeIds": [
+        "concept:modular"
+      ],
+      "scope": "Congruence over integers is defined by the difference being an integer multiple.",
+      "code": "import Std\n\ntheorem result (a b c d m : Int)\n    (hab : ∃ k, a - b = m * k) (hcd : ∃ k, c - d = m * k) :\n    ∃ k, (a + c) - (b + d) = m * k := by\n  obtain ⟨k, hk⟩ := hab\n  obtain ⟨l, hl⟩ := hcd\n  refine ⟨k + l, ?_⟩\n  rw [Int.mul_add]\n  omega\n\n#print axioms result\n",
+      "file": "lean/Congruence.lean",
+      "sha256": "765afe3c8a37902dce52edcce05a27eb3257bdebdcca6ac98ba49449306ad87c",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "Parity",
+      "title": "Every natural number has parity zero or one",
+      "category": "Arithmetic",
+      "nodeIds": [
+        "concept:modular",
+        "concept:integers"
+      ],
+      "scope": "The remainder modulo two has exactly two possibilities.",
+      "code": "import Std\n\ntheorem result (n : Nat) : n % 2 = 0 ∨ n % 2 = 1 := by\n  omega\n\n#print axioms result\n",
+      "file": "lean/Parity.lean",
+      "sha256": "1638494ba2442eb4ca2e7f73caa965af26a2ac234c6da979b5e78e4e70f86da1",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "ListSumAppend",
+      "title": "A finite sum splits over concatenation",
+      "category": "Finite structures",
+      "nodeIds": [
+        "reason:deep:finite-distribution",
+        "concept:counting"
+      ],
+      "scope": "A recursive natural-number list sum, proved by structural induction.",
+      "code": "import Std\n\ndef total : List Nat → Nat\n  | [] => 0\n  | x :: xs => x + total xs\n\ntheorem result (xs ys : List Nat) : total (xs ++ ys) = total xs + total ys := by\n  induction xs with\n  | nil => simp [total]\n  | cons x xs ih => simp [total, ih, Nat.add_assoc]\n\n#print axioms result\n",
+      "file": "lean/ListSumAppend.lean",
+      "sha256": "8cd6e2621ffc5cb6f96cc1e2b5d263e5618fc1106d5cfb8efeb76e7c86f215a1",
+      "compilerOutput": "'result' depends on axioms: [propext]"
+    },
+    {
+      "id": "ListLength",
+      "title": "Concatenation adds list lengths",
+      "category": "Finite structures",
+      "nodeIds": [
+        "concept:counting",
+        "concept:induction"
+      ],
+      "scope": "An exact statement about finite lists of arbitrary element type.",
+      "code": "import Std\n\ntheorem result {α : Type} (xs ys : List α) : (xs ++ ys).length = xs.length + ys.length := by\n  induction xs with\n  | nil => simp\n  | cons x xs ih => simp [ih, Nat.add_assoc, Nat.add_comm, Nat.add_left_comm]\n\n#print axioms result\n",
+      "file": "lean/ListLength.lean",
+      "sha256": "1b74d06459c3071388844346c104d1c5f224242a7b68ea14ecb689f9f5a03712",
+      "compilerOutput": "'result' depends on axioms: [propext]"
+    },
+    {
+      "id": "ListMap",
+      "title": "Mapping twice equals mapping a composition",
+      "category": "Finite structures",
+      "nodeIds": [
+        "concept:functions",
+        "concept:induction"
+      ],
+      "scope": "Structural induction establishes a useful finite-data transformation law.",
+      "code": "import Std\n\ntheorem result {α β γ : Type} (f : α → β) (g : β → γ) (xs : List α) :\n    (xs.map f).map g = xs.map (fun x => g (f x)) := by\n  induction xs with\n  | nil => rfl\n  | cons x xs ih => simp only [List.map_cons, ih]\n\n#print axioms result\n",
+      "file": "lean/ListMap.lean",
+      "sha256": "eb2c5515c890430e35a9caaaa658a67183351e58d701b70b654cf5cd54df3ccd",
+      "compilerOutput": "'result' depends on axioms: [propext]"
+    },
+    {
+      "id": "Telescoping",
+      "title": "A telescoping finite sum",
+      "category": "Finite structures",
+      "nodeIds": [
+        "concept:sequences",
+        "concept:induction"
+      ],
+      "scope": "An integer-valued sequence with a recursively defined sum of consecutive differences.",
+      "code": "import Std\n\ndef differences (a : Nat → Int) : Nat → Int\n  | 0 => 0\n  | n + 1 => differences a n + (a (n + 1) - a n)\n\ntheorem result (a : Nat → Int) (n : Nat) : differences a n = a n - a 0 := by\n  induction n with\n  | zero => simp [differences]\n  | succ n ih => simp only [differences, ih]; omega\n\n#print axioms result\n",
+      "file": "lean/Telescoping.lean",
+      "sha256": "956de4ef8401e950de3dc0108902f0f7f91c675dd5095d75d42d0edc22b0995f",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "OrderTrans",
+      "title": "Bounds propagate through intermediate quantities",
+      "category": "Order",
+      "nodeIds": [
+        "concept:inequalities",
+        "reason:bounds"
+      ],
+      "scope": "Exact integer-order transitivity; no limit passage is involved.",
+      "code": "import Std\n\ntheorem result (a b c d : Int) (ab : a ≤ b) (bc : b ≤ c) (cd : c ≤ d) : a ≤ d := by\n  omega\n\n#print axioms result\n",
+      "file": "lean/OrderTrans.lean",
+      "sha256": "6ac8d227791d46928132e229c25e4c184cd51903785aa7d1d2529697b5456cab",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "OrderAntisymmetry",
+      "title": "Two opposite bounds determine equality",
+      "category": "Order",
+      "nodeIds": [
+        "concept:inequalities"
+      ],
+      "scope": "Integer antisymmetry illustrates why lower and upper bounds can pin down a value.",
+      "code": "import Std\n\ntheorem result (a b : Int) (h₁ : a ≤ b) (h₂ : b ≤ a) : a = b := by\n  omega\n\n#print axioms result\n",
+      "file": "lean/OrderAntisymmetry.lean",
+      "sha256": "c9a1c17c95720b9e6179cb0c5837c7d497538fa3cf95dd7fb39be2686ae1636b",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "StrictGap",
+      "title": "A positive integer gap excludes equality",
+      "category": "Order",
+      "nodeIds": [
+        "concept:inequalities",
+        "concept:contradiction"
+      ],
+      "scope": "An integer gap example, not a real-analysis estimate.",
+      "code": "import Std\n\ntheorem result (a b : Int) (h : a + 1 ≤ b) : a ≠ b := by\n  omega\n\n#print axioms result\n",
+      "file": "lean/StrictGap.lean",
+      "sha256": "5e4e744a4c3c92b1339823be2adfc13e8ff2869c3db81c0ef65f951a5c1f37e3",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "SequenceStep",
+      "title": "Stepwise monotonicity controls every later term",
+      "category": "Sequences",
+      "nodeIds": [
+        "concept:sequences",
+        "concept:induction"
+      ],
+      "scope": "For an integer-valued sequence, adjacent inequalities imply a bound after any finite number of steps.",
+      "code": "import Std\n\ntheorem result (a : Nat → Int) (h : ∀ n, a n ≤ a (n + 1)) (n k : Nat) :\n    a n ≤ a (n + k) := by\n  induction k with\n  | zero => simp\n  | succ k ih =>\n    have hs := h (n + k)\n    have ht : a n ≤ a ((n + k) + 1) := by omega\n    simpa only [Nat.add_assoc] using ht\n\n#print axioms result\n",
+      "file": "lean/SequenceStep.lean",
+      "sha256": "8f2b7c52dccaab3adcbc15b5866aa31232f27a493e897543558bb0cbf252c190",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "ConstantSequence",
+      "title": "Zero consecutive differences force a constant sequence",
+      "category": "Sequences",
+      "nodeIds": [
+        "concept:sequences",
+        "concept:dynamics"
+      ],
+      "scope": "A discrete analogue only; this is not the calculus zero-derivative theorem.",
+      "code": "import Std\n\ntheorem result {α : Type} (a : Nat → α) (h : ∀ n, a (n + 1) = a n) (n : Nat) :\n    a n = a 0 := by\n  induction n with\n  | zero => rfl\n  | succ n ih => exact (h n).trans ih\n\n#print axioms result\n",
+      "file": "lean/ConstantSequence.lean",
+      "sha256": "10f606dcb29bf249fe0c88f4c67eecf1389646c15614035e39699de4a14ff6ac",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Eventually",
+      "title": "Two eventual properties hold together eventually",
+      "category": "Sequences",
+      "nodeIds": [
+        "concept:limits",
+        "college:limsup"
+      ],
+      "scope": "A quantified tail argument. It proves no convergence claim by itself.",
+      "code": "import Std\n\ntheorem result (P Q : Nat → Prop)\n    (hp : ∃ N, ∀ n, N ≤ n → P n) (hq : ∃ N, ∀ n, N ≤ n → Q n) :\n    ∃ N, ∀ n, N ≤ n → P n ∧ Q n := by\n  obtain ⟨A, hA⟩ := hp\n  obtain ⟨B, hB⟩ := hq\n  refine ⟨A + B, ?_⟩\n  intro n hn\n  exact ⟨hA n (by omega), hB n (by omega)⟩\n\n#print axioms result\n",
+      "file": "lean/Eventually.lean",
+      "sha256": "e01de9e368c58ed7207372a845d70b3a0c6275313f8413feda4e9f2912614cee",
+      "compilerOutput": "'result' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "Reachability",
+      "title": "Finite graph paths concatenate",
+      "category": "Graphs",
+      "nodeIds": [
+        "concept:graphs"
+      ],
+      "scope": "A graph is an arbitrary relation; reachability is its inductively defined reflexive-transitive closure.",
+      "code": "import Std\n\ninductive Reach {α : Type} (edge : α → α → Prop) : α → α → Prop where\n  | refl (a) : Reach edge a a\n  | step {a b c} : edge a b → Reach edge b c → Reach edge a c\n\ntheorem result {α : Type} {edge : α → α → Prop} {a b c : α}\n    (ab : Reach edge a b) (bc : Reach edge b c) : Reach edge a c := by\n  induction ab with\n  | refl => exact bc\n  | step e path ih => exact Reach.step e (ih bc)\n\n#print axioms result\n",
+      "file": "lean/Reachability.lean",
+      "sha256": "76aa8ebb0b3c7af459169bc8bfc83bc18ef4e468d34b953574edf3c9d5c136db",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "Undirected",
+      "title": "Symmetric adjacency reverses a two-edge walk",
+      "category": "Graphs",
+      "nodeIds": [
+        "concept:graphs"
+      ],
+      "scope": "Only reverses a length-two walk; does not claim a general graph classification.",
+      "code": "import Std\n\ntheorem result {α : Type} (edge : α → α → Prop)\n    (symmetric : ∀ a b, edge a b → edge b a) (a b c : α)\n    (ab : edge a b) (bc : edge b c) : edge c b ∧ edge b a := by\n  exact ⟨symmetric b c bc, symmetric a b ab⟩\n\n#print axioms result\n",
+      "file": "lean/Undirected.lean",
+      "sha256": "b42c927141fd4a94b1b449951abf19924c463e114e2ac7a60d22eeb389eb2595",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "FiniteValue",
+      "title": "An optional value cannot be both absent and present",
+      "category": "Finite structures",
+      "nodeIds": [
+        "reason:deep:finite-valuation"
+      ],
+      "scope": "A datatype fact underlying the abstract valuation teaching model.",
+      "code": "import Std\n\ntheorem result {α : Type} (x : α) : (none : Option α) ≠ some x := by\n  intro h\n  cases h\n\n#print axioms result\n",
+      "file": "lean/FiniteValue.lean",
+      "sha256": "75f2d13161c484a5d1034ac62eb5e381515aaf0c012d06b6217546a6c9997ab8",
+      "compilerOutput": "'result' does not depend on any axioms"
+    },
+    {
+      "id": "VectorDistributivity",
+      "title": "Scaling a two-coordinate vector distributes",
+      "category": "Algebra models",
+      "nodeIds": [
+        "concept:vectors",
+        "college:bilinear"
+      ],
+      "scope": "A concrete natural-number pair model. Naturals are not a field, so this is not a general vector-space theorem.",
+      "code": "import Std\n\ndef scale (k : Nat) (v : Nat × Nat) := (k * v.1, k * v.2)\ndef plus (u v : Nat × Nat) := (u.1 + v.1, u.2 + v.2)\n\ntheorem result (k : Nat) (u v : Nat × Nat) :\n    scale k (plus u v) = plus (scale k u) (scale k v) := by\n  simp [scale, plus, Nat.mul_add]\n\n#print axioms result\n",
+      "file": "lean/VectorDistributivity.lean",
+      "sha256": "0ffd336a30678f0b0524e3ecf07b844c0dbf82d3ed99931e981b0ec772883122",
+      "compilerOutput": "'result' depends on axioms: [propext]"
+    },
+    {
+      "id": "KernelSum",
+      "title": "The kernel of an additive map is closed under addition",
+      "category": "Algebra models",
+      "nodeIds": [
+        "concept:linear"
+      ],
+      "scope": "An exact integer additive-map statement, with additivity supplied as a hypothesis.",
+      "code": "import Std\n\ntheorem result (f : Int → Int) (additive : ∀ a b, f (a + b) = f a + f b)\n    (x y : Int) (hx : f x = 0) (hy : f y = 0) : f (x + y) = 0 := by\n  rw [additive, hx, hy]\n  rfl\n\n#print axioms result\n",
+      "file": "lean/KernelSum.lean",
+      "sha256": "ffa853734325ac3a9b14db333b78bf8e4b89cf60d54acf42785fbb488d681e8c",
+      "compilerOutput": "'result' does not depend on any axioms"
     }
   ]
 }

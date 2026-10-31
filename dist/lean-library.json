@@ -1,0 +1,336 @@
+[
+  {
+    "id": "AndComm",
+    "title": "Conjunction: rearrange two assumptions",
+    "category": "Logic",
+    "nodeIds": [
+      "concept:logic"
+    ],
+    "scope": "An exact propositional equivalence; no mathematical premises are supplied implicitly."
+  },
+  {
+    "id": "OrComm",
+    "title": "Disjunction: reason by cases",
+    "category": "Logic",
+    "nodeIds": [
+      "concept:logic"
+    ],
+    "scope": "An exact propositional equivalence proved by considering both cases."
+  },
+  {
+    "id": "Contrapositive",
+    "title": "Contrapositive of an implication",
+    "category": "Logic",
+    "nodeIds": [
+      "concept:contradiction",
+      "concept:logic"
+    ],
+    "scope": "Proves the forward contraposition rule constructively."
+  },
+  {
+    "id": "DoubleNegation",
+    "title": "Classical proof by contradiction",
+    "category": "Logic",
+    "nodeIds": [
+      "concept:contradiction"
+    ],
+    "scope": "Double-negation elimination uses classical reasoning; inspect the printed dependencies."
+  },
+  {
+    "id": "DeMorgan",
+    "title": "Negating a disjunction",
+    "category": "Logic",
+    "nodeIds": [
+      "concept:logic",
+      "concept:contradiction"
+    ],
+    "scope": "This De Morgan law is constructive."
+  },
+  {
+    "id": "Witness",
+    "title": "Existence requires a witness",
+    "category": "Logic",
+    "nodeIds": [
+      "concept:logic",
+      "concept:integers"
+    ],
+    "scope": "Produces a concrete natural-number witness for a universally quantified existence statement."
+  },
+  {
+    "id": "Intersection",
+    "title": "Set intersection is commutative",
+    "category": "Sets",
+    "nodeIds": [
+      "concept:sets"
+    ],
+    "scope": "Sets are predicates α → Prop; the conclusion is pointwise membership equivalence."
+  },
+  {
+    "id": "Union",
+    "title": "Set union is associative",
+    "category": "Sets",
+    "nodeIds": [
+      "concept:sets"
+    ],
+    "scope": "Pointwise associativity for predicate-based sets."
+  },
+  {
+    "id": "DistributeSets",
+    "title": "Intersection distributes over union",
+    "category": "Sets",
+    "nodeIds": [
+      "concept:sets"
+    ],
+    "scope": "An exact membership equivalence; the hypotheses describe membership in three sets."
+  },
+  {
+    "id": "Subset",
+    "title": "Subset relations compose",
+    "category": "Sets",
+    "nodeIds": [
+      "concept:sets",
+      "concept:functions"
+    ],
+    "scope": "Uses the pointwise definition of subset inclusion."
+  },
+  {
+    "id": "Preimage",
+    "title": "Preimages preserve intersections",
+    "category": "Sets",
+    "nodeIds": [
+      "concept:sets",
+      "concept:functions"
+    ],
+    "scope": "The preimage membership identity reduces to definitions."
+  },
+  {
+    "id": "InjectiveCompose",
+    "title": "Composition preserves injectivity",
+    "category": "Functions",
+    "nodeIds": [
+      "concept:functions"
+    ],
+    "scope": "Injectivity is stated explicitly as an equality implication."
+  },
+  {
+    "id": "SurjectiveCompose",
+    "title": "Composition preserves surjectivity",
+    "category": "Functions",
+    "nodeIds": [
+      "concept:functions"
+    ],
+    "scope": "Surjectivity is proved by constructing preimages in reverse order."
+  },
+  {
+    "id": "LeftInverse",
+    "title": "A left inverse forces injectivity",
+    "category": "Functions",
+    "nodeIds": [
+      "concept:functions",
+      "concept:linear"
+    ],
+    "scope": "An elementary function theorem, not a proof that a particular matrix has an inverse."
+  },
+  {
+    "id": "RightInverse",
+    "title": "A right inverse forces surjectivity",
+    "category": "Functions",
+    "nodeIds": [
+      "concept:functions"
+    ],
+    "scope": "A right inverse supplies the required witness directly."
+  },
+  {
+    "id": "ComposeAssoc",
+    "title": "Function composition is associative",
+    "category": "Functions",
+    "nodeIds": [
+      "concept:functions",
+      "college:matmul"
+    ],
+    "scope": "A pointwise composition identity. It does not certify a matrix algorithm."
+  },
+  {
+    "id": "Divisibility",
+    "title": "Divisibility is transitive",
+    "category": "Arithmetic",
+    "nodeIds": [
+      "concept:integers",
+      "concept:prime"
+    ],
+    "scope": "Uses a divides b as existence of a natural-number multiplier."
+  },
+  {
+    "id": "EvenSum",
+    "title": "The sum of two even numbers is even",
+    "category": "Arithmetic",
+    "nodeIds": [
+      "concept:integers"
+    ],
+    "scope": "Evenness is expressed by an explicit natural-number witness."
+  },
+  {
+    "id": "Congruence",
+    "title": "Adding congruences modulo a fixed number",
+    "category": "Arithmetic",
+    "nodeIds": [
+      "concept:modular"
+    ],
+    "scope": "Congruence over integers is defined by the difference being an integer multiple."
+  },
+  {
+    "id": "Parity",
+    "title": "Every natural number has parity zero or one",
+    "category": "Arithmetic",
+    "nodeIds": [
+      "concept:modular",
+      "concept:integers"
+    ],
+    "scope": "The remainder modulo two has exactly two possibilities."
+  },
+  {
+    "id": "ListSumAppend",
+    "title": "A finite sum splits over concatenation",
+    "category": "Finite structures",
+    "nodeIds": [
+      "reason:deep:finite-distribution",
+      "concept:counting"
+    ],
+    "scope": "A recursive natural-number list sum, proved by structural induction."
+  },
+  {
+    "id": "ListLength",
+    "title": "Concatenation adds list lengths",
+    "category": "Finite structures",
+    "nodeIds": [
+      "concept:counting",
+      "concept:induction"
+    ],
+    "scope": "An exact statement about finite lists of arbitrary element type."
+  },
+  {
+    "id": "ListMap",
+    "title": "Mapping twice equals mapping a composition",
+    "category": "Finite structures",
+    "nodeIds": [
+      "concept:functions",
+      "concept:induction"
+    ],
+    "scope": "Structural induction establishes a useful finite-data transformation law."
+  },
+  {
+    "id": "Telescoping",
+    "title": "A telescoping finite sum",
+    "category": "Finite structures",
+    "nodeIds": [
+      "concept:sequences",
+      "concept:induction"
+    ],
+    "scope": "An integer-valued sequence with a recursively defined sum of consecutive differences."
+  },
+  {
+    "id": "OrderTrans",
+    "title": "Bounds propagate through intermediate quantities",
+    "category": "Order",
+    "nodeIds": [
+      "concept:inequalities",
+      "reason:bounds"
+    ],
+    "scope": "Exact integer-order transitivity; no limit passage is involved."
+  },
+  {
+    "id": "OrderAntisymmetry",
+    "title": "Two opposite bounds determine equality",
+    "category": "Order",
+    "nodeIds": [
+      "concept:inequalities"
+    ],
+    "scope": "Integer antisymmetry illustrates why lower and upper bounds can pin down a value."
+  },
+  {
+    "id": "StrictGap",
+    "title": "A positive integer gap excludes equality",
+    "category": "Order",
+    "nodeIds": [
+      "concept:inequalities",
+      "concept:contradiction"
+    ],
+    "scope": "An integer gap example, not a real-analysis estimate."
+  },
+  {
+    "id": "SequenceStep",
+    "title": "Stepwise monotonicity controls every later term",
+    "category": "Sequences",
+    "nodeIds": [
+      "concept:sequences",
+      "concept:induction"
+    ],
+    "scope": "For an integer-valued sequence, adjacent inequalities imply a bound after any finite number of steps."
+  },
+  {
+    "id": "ConstantSequence",
+    "title": "Zero consecutive differences force a constant sequence",
+    "category": "Sequences",
+    "nodeIds": [
+      "concept:sequences",
+      "concept:dynamics"
+    ],
+    "scope": "A discrete analogue only; this is not the calculus zero-derivative theorem."
+  },
+  {
+    "id": "Eventually",
+    "title": "Two eventual properties hold together eventually",
+    "category": "Sequences",
+    "nodeIds": [
+      "concept:limits",
+      "college:limsup"
+    ],
+    "scope": "A quantified tail argument. It proves no convergence claim by itself."
+  },
+  {
+    "id": "Reachability",
+    "title": "Finite graph paths concatenate",
+    "category": "Graphs",
+    "nodeIds": [
+      "concept:graphs"
+    ],
+    "scope": "A graph is an arbitrary relation; reachability is its inductively defined reflexive-transitive closure."
+  },
+  {
+    "id": "Undirected",
+    "title": "Symmetric adjacency reverses a two-edge walk",
+    "category": "Graphs",
+    "nodeIds": [
+      "concept:graphs"
+    ],
+    "scope": "Only reverses a length-two walk; does not claim a general graph classification."
+  },
+  {
+    "id": "FiniteValue",
+    "title": "An optional value cannot be both absent and present",
+    "category": "Finite structures",
+    "nodeIds": [
+      "reason:deep:finite-valuation"
+    ],
+    "scope": "A datatype fact underlying the abstract valuation teaching model."
+  },
+  {
+    "id": "VectorDistributivity",
+    "title": "Scaling a two-coordinate vector distributes",
+    "category": "Algebra models",
+    "nodeIds": [
+      "concept:vectors",
+      "college:bilinear"
+    ],
+    "scope": "A concrete natural-number pair model. Naturals are not a field, so this is not a general vector-space theorem."
+  },
+  {
+    "id": "KernelSum",
+    "title": "The kernel of an additive map is closed under addition",
+    "category": "Algebra models",
+    "nodeIds": [
+      "concept:linear"
+    ],
+    "scope": "An exact integer additive-map statement, with additivity supplied as a hypothesis."
+  }
+]
