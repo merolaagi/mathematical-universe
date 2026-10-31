@@ -1,0 +1,74 @@
+{
+  "compiler": "Lean (version 4.15.0, arm64-apple-darwin23.6.0, commit 11651562caae, Release)",
+  "scope": "Local check of bundled file bytes only. Live editor changes are checked separately by Lean Web.",
+  "examples": [
+    {
+      "id": "Implication",
+      "title": "Compose two proof steps",
+      "nodeIds": [
+        "reason:deep:gronwall",
+        "concept:logic"
+      ],
+      "scope": "This checks composition of explicit hypotheses, not the truth of either hypothesis.",
+      "code": "import Std\n\n-- Each hypothesis is explicit: this proves the composition, not P itself.\ntheorem compose_steps (P Q R : Prop)\n    (first : P → Q) (second : Q → R) : P → R := by\n  intro proofOfP\n  have proofOfQ : Q := first proofOfP\n  exact second proofOfQ\n\n#print axioms compose_steps\n",
+      "file": "lean/Implication.lean",
+      "sha256": "2b6d3b3f487b5ff43abbffecd64bfa0503f02d54c89b23a4df5b165047d49d85",
+      "compilerOutput": "'compose_steps' does not depend on any axioms"
+    },
+    {
+      "id": "Contradiction",
+      "title": "Incompatible integer bounds",
+      "nodeIds": [
+        "reason:bounds",
+        "reason:catalan",
+        "college:limsup"
+      ],
+      "scope": "An integer teaching model. It does not formalize the manuscript’s real limits or numerical estimates.",
+      "code": "import Std\n\n-- An elementary integer model of incompatible bounds.\n-- This does NOT prove the manuscript's real-number limit estimates.\ntheorem incompatible_bounds (x lower upper : Int)\n    (hLower : lower ≤ x) (hUpper : x ≤ upper)\n    (hGap : upper < lower) : False := by\n  omega\n\n#print axioms incompatible_bounds\n",
+      "file": "lean/Contradiction.lean",
+      "sha256": "6e75bf03cf439a6edcb49c12fe697c058dbe9c5c5ba1edbd7d1b56bff1bf34cf",
+      "compilerOutput": "'incompatible_bounds' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "Nonvanishing",
+      "title": "A finite valuation implies nonzero",
+      "nodeIds": [
+        "reason:nonzero",
+        "reason:deep:source-nonzero",
+        "reason:deep:finite-valuation"
+      ],
+      "scope": "Uses an abstract Option-valued model. The finite-valuation hypothesis is supplied, not proved for a research determinant.",
+      "code": "import Std\n\n-- none models an infinite valuation; some k models a finite valuation.\n-- Establishing the hypothesis finiteVal for a determinant is separate work.\ntheorem nonzero_of_finite_value {α : Type} (zero : α)\n    (valuation : α → Option Int) (atZero : valuation zero = none)\n    (q : α) (k : Int) (finiteVal : valuation q = some k) : q ≠ zero := by\n  intro equalsZero\n  rw [equalsZero, atZero] at finiteVal\n  contradiction\n\n#print axioms nonzero_of_finite_value\n",
+      "file": "lean/Nonvanishing.lean",
+      "sha256": "f953239b67f37e42de200b6e94f135f89f94d0671b5fba9e1e96af3d1a6c9cff",
+      "compilerOutput": "'nonzero_of_finite_value' does not depend on any axioms"
+    },
+    {
+      "id": "Induction",
+      "title": "The finite-sum formula by induction",
+      "nodeIds": [
+        "reason:sum",
+        "reason:induction",
+        "concept:induction"
+      ],
+      "scope": "Checks the exact natural-number identity 2·sumTo n=n(n+1), including n=0.",
+      "code": "import Std\n\ndef sumTo : Nat → Nat\n  | 0 => 0\n  | n + 1 => sumTo n + (n + 1)\n\n-- Twice the sum avoids division in natural numbers.\ntheorem twice_sum (n : Nat) : 2 * sumTo n = n * (n + 1) := by\n  induction n with\n  | zero => rfl\n  | succ n ih =>\n    simp only [sumTo, Nat.mul_add, Nat.add_mul, Nat.mul_one, Nat.one_mul] at *\n    omega\n\n#print axioms twice_sum\n",
+      "file": "lean/Induction.lean",
+      "sha256": "4812590fd0693305deb2fea58d617776c2f08ed1d95d77ac93c8330ab76ee30d",
+      "compilerOutput": "'twice_sum' depends on axioms: [propext, Quot.sound]"
+    },
+    {
+      "id": "SharedLemma",
+      "title": "Reuse a lemma in two proofs",
+      "nodeIds": [
+        "concept:integers",
+        "concept:graphs"
+      ],
+      "scope": "An elementary example of two results sharing the same proved prerequisite.",
+      "code": "import Std\n\n-- A named lemma can support more than one result.\ntheorem positive_implies_nonzero (n : Nat) (h : 0 < n) : n ≠ 0 := by\n  omega\n\ntheorem successor_nonzero (n : Nat) : n + 1 ≠ 0 := by\n  apply positive_implies_nonzero\n  omega\n\ntheorem square_positive_input_nonzero (n : Nat) (h : 0 < n) : n * n ≠ 0 := by\n  exact Nat.mul_ne_zero (positive_implies_nonzero n h) (positive_implies_nonzero n h)\n\n#print axioms successor_nonzero\n#print axioms square_positive_input_nonzero\n",
+      "file": "lean/SharedLemma.lean",
+      "sha256": "4f81953c8b7278dd3ddf42fc7f86741037b5dd803078c5e8a97d0b348cef10c3",
+      "compilerOutput": "'successor_nonzero' depends on axioms: [propext, Quot.sound]\n'square_positive_input_nonzero' depends on axioms: [propext, Quot.sound]"
+    }
+  ]
+}

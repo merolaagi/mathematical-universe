@@ -123,3 +123,20 @@ python3 scripts/release.py
 ```
 
 Structural validation checks that derived steps have supporting nodes, every terminal node declares its boundary, the selected routes are acyclic, and the research uncertainty is retained. This is not a formal proof checker.
+
+## Embedded Lean playground
+
+Click **Lean playground** in the header, or **Explore Lean example** on supported nodes. The embedded official [Lean Web editor](https://live.lean-lang.org/) supports live editing and displays its own goals and diagnostics. It sends code to that external service and requires internet access. It is not a compiler endpoint on the hosting Mac. If embedding fails, use **Open full editor**.
+
+Five `.lean` files under `dist/lean/` cover implication composition, incompatible integer bounds, abstract finite-valuation nonvanishing, a finite-sum induction, and a shared lemma used twice. They import only Std. The bundled files were checked with the compiler version recorded in `dist/lean-examples.json`; output includes `#print axioms`. An analogous or conditional example does not certify the connected research claim. The external editor may use a different Lean version.
+
+Choose an example and click **Load example in editor** to replace the editor contents. Preserve edits with the external editor’s save/share controls before switching. Closing and reopening the panel in the same page retains the frame; page reloads do not guarantee retention. Automatic app reload is paused while the playground is open. MathUni does not read cross-origin compiler messages or automatically mark graph nodes verified.
+
+To reproduce local checks with Lean on PATH:
+
+```sh
+python3 scripts/check_lean_examples.py
+python3 scripts/release.py
+```
+
+The check script runs only the maintained repository examples, rejects admitted proofs in those examples, and tests that an intentionally invalid proof fails and a `sorry` proof exposes `sorryAx`. It is not an HTTP service for executing user input. To work offline, download an example and run `lean Example.lean` locally.

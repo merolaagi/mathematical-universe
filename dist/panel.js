@@ -42,6 +42,6 @@
  addEventListener('resize',()=>{apply()});apply();
  // A release writes version.json last. Existing tabs pick up completed releases.
  const build=document.querySelector('meta[name="mathuni-build"]')?.content;
- async function checkUpdate(){if(!build||active||document.hidden)return;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const v=await r.json();if(v.build&&v.build!==build){remember();location.reload()}}catch{}}
+ async function checkUpdate(){if(!build||active||document.hidden||document.querySelector('#leanDialog')?.open)return;try{const r=await fetch('version.json?t='+Date.now(),{cache:'no-store'});if(!r.ok)return;const v=await r.json();if(v.build&&v.build!==build){remember();location.reload()}}catch{}}
  setInterval(checkUpdate,30000);document.addEventListener('visibilitychange',checkUpdate);
 })();
