@@ -107,6 +107,9 @@ def main(argv=None):
     else:
         ids = select(a.families, all_ids)
     out.mkdir(parents=True, exist_ok=True)
+    if a.estimate:
+        for old in out.glob('f*.json'):
+            old.unlink()
 
     todo = []
     for fid in ids:

@@ -3,6 +3,7 @@
 Settings come from environment variables or local/swarm.env (KEY=value lines):
   OLLAMA_HOST        default http://127.0.0.1:11434
   OLLAMA_MODEL       default qwen2.5:14b
+  OLLAMA_THINK       default false (turns off Qwen3-style thinking; "auto" leaves the model default)
   ANTHROPIC_API_KEY  enables the claude backend
   CLAUDE_MODEL       default claude-sonnet-5-5
 local/.env is NOT used here: it holds only the Neo4j password.
@@ -22,7 +23,7 @@ def settings():
             if line and not line.startswith('#') and '=' in line:
                 k, v = line.split('=', 1)
                 values[k.strip()] = v.strip().strip('"').strip("'")
-    for k in ('OLLAMA_HOST', 'OLLAMA_MODEL', 'ANTHROPIC_API_KEY', 'CLAUDE_MODEL'):
+    for k in ('OLLAMA_HOST', 'OLLAMA_MODEL', 'OLLAMA_THINK', 'ANTHROPIC_API_KEY', 'CLAUDE_MODEL', 'MANIM_BIN'):
         if os.environ.get(k):
             values[k] = os.environ[k]
     values.setdefault('OLLAMA_HOST', 'http://127.0.0.1:11434')
@@ -74,6 +75,8 @@ class Ollama:
         self.host = (host or s['OLLAMA_HOST']).rstrip('/')
         self.ctx = ctx
         self.stats = Stats()
+        think = s.get('OLLAMA_THINK', 'false').strip().lower()
+        self.think = None if think in ('', 'auto', 'default') else think in ('1', 'true', 'yes', 'on')
 
     def label(self):
         return f'ollama:{self.model}'
@@ -95,10 +98,23 @@ class Ollama:
                 'options': {'temperature': temperature, 'num_ctx': self.ctx, 'num_predict': max_tokens}}
         if json_mode:
             body['format'] = 'json'
+        if self.think is not None:
+            body['think'] = self.think
         t = time.time()
-        r = _post(self.host + '/api/chat', body, {'Content-Type': 'application/json'}, timeout=900)
+        try:
+            r = _post(self.host + '/api/chat', body, {'Content-Type': 'application/json'}, timeout=900)
+        except LLMError as e:
+            if 'think' not in body or not re.search(r'HTTP 400.*think', str(e), re.I | re.S):
+                raise
+            self.think = None
+            body.pop('think')
+            r = _post(self.host + '/api/chat', body, {'Content-Type': 'application/json'}, timeout=900)
         self.stats.add(r.get('prompt_eval_count', 0), r.get('eval_count', 0), time.time() - t)
-        return r['message']['content']
+        content = re.sub(r'<think>.*?(</think>|$)', '', r['message'].get('content', ''), flags=re.S).strip()
+        if not content and r.get('eval_count', 0) >= max_tokens:
+            raise LLMError(f'{self.model} used its whole {max_tokens}-token budget without answering '
+                           '(it is probably thinking). Set OLLAMA_THINK=false in local/swarm.env or pick another model.')
+        return content
 
 
 class Claude:
