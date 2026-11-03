@@ -10,6 +10,7 @@ def main():
  if sys.version_info<(3,10):raise SystemExit('Install Python 3.10 or newer: https://www.python.org/downloads/macos/')
  os.environ['PATH']=os.pathsep.join([str(Path.home()/'.docker/bin'),'/opt/homebrew/bin','/usr/local/bin',os.environ.get('PATH','')])
  with socket.socket() as sock:
+  sock.setsockopt(socket.SOL_SOCKET,socket.SO_REUSEADDR,1)
   try:sock.bind(('127.0.0.1',18765))
   except OSError:raise SystemExit('Port 18765 is already in use. If the app is running, open http://127.0.0.1:18765. Otherwise stop the program using that port.')
  if not args.snapshot:

@@ -12,6 +12,14 @@ An independent web app for exploring mathematical research, proof passages, and 
 - Drag, resize, float, or dock the inspector on desktop.
 - Use bundled compressed data alone, or connect to local Neo4j.
 
+## Quick install (v0.8.0 zip)
+
+```sh
+cd ~/Downloads && unzip -o mathematical-universe-v0.8.0.zip -d ~/Sites/mathuni && cd ~/Sites/mathuni/mathematical-universe-main && python3 mathuni.py doctor && python3 mathuni.py start
+```
+
+`mathuni.py start` uses Neo4j when Docker is running and falls back to the bundled snapshot otherwise (`--snapshot` / `--neo4j` force a mode). If an older Mathematical Universe build is already serving port 18765, it is stopped and replaced. `python3 mathuni.py stop` stops the web app; add `--db` to also stop Neo4j.
+
 ## Install on a Mac
 
 Install Python 3.10 or newer and Git. For Neo4j mode, also install and open Docker Desktop.
