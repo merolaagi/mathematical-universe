@@ -8,3 +8,5 @@ __pycache__/
 *.log
 Publish.command
 scripts/install_route.py
+dist/explainers/video/
+local/estimate/

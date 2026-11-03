@@ -20,6 +20,29 @@ cd ~/Downloads && unzip -o mathematical-universe-v0.8.0.zip -d ~/Sites/mathuni &
 
 `mathuni.py start` uses Neo4j when Docker is running and falls back to the bundled snapshot otherwise (`--snapshot` / `--neo4j` force a mode). If an older Mathematical Universe build is already serving port 18765, it is stopped and replaced. `python3 mathuni.py stop` stops the web app; add `--db` to also stop Neo4j.
 
+## Explainer swarm (v0.9.0)
+
+A team of agents writes an explainer for each result family: **untangler** (main statement, key equation, symbols, given/concludes, foundation concepts), **intuitor** (hook, step-by-step intuition, analogy, curious/undergraduate/researcher versions, misconceptions, next questions), **visualizer** (interactive plots with sliders, partial-sum series, step-through derivations, concept networks), **critic** (scores 0–10 against the source; below the threshold the draft is revised once), and **animator** (a Manim video). Output goes to `dist/explainers/`; nothing appears on the site until `python3 scripts/release.py`.
+
+Safety: widget formulas must parse in a small arithmetic grammar (checked in Python and again in the browser, never `eval`-ed from model text), and generated Manim scripts must pass an allowlist check (no files, OS access, imports beyond manim/math/numpy) before rendering in a temporary folder with a time limit. Every explainer is labelled as an AI-generated draft with its reviewer score and source link.
+
+Local and free (default):
+
+```sh
+brew install ollama
+brew services start ollama
+ollama pull qwen2.5:14b
+python3 mathuni.py explain --estimate 2
+python3 mathuni.py explain --families all
+python3 scripts/release.py
+```
+
+Runs resume where they stopped; failures are listed in `local/swarm-failures.json`. Use `--model` for another Ollama model, `--no-videos` to skip Manim, `--min-score` to change the revision threshold.
+
+Optional Claude API: put `ANTHROPIC_API_KEY=...` (and optionally `CLAUDE_MODEL=...`) in `local/swarm.env` (not `local/.env`, which holds only the Neo4j password). Then `--backend claude`, or `--escalate claude` to redo only local drafts scoring below `--min-score`, or `--rescore-below 6 --backend claude` to upgrade existing low scorers.
+
+Videos (optional): `brew install pango cairo pkg-config`, then a Python 3.12 virtualenv at `../.venv-manim` with `pip install manim`; the swarm finds it automatically (or set `MANIM_BIN` in `local/swarm.env`). Without LaTeX the animator uses plain-text formulas.
+
 ## Install on a Mac
 
 Install Python 3.10 or newer and Git. For Neo4j mode, also install and open Docker Desktop.

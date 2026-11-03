@@ -6,6 +6,7 @@
   python3 mathuni.py start --snapshot  bundled data only, no Docker
   python3 mathuni.py start --neo4j     require Neo4j (fails if Docker is not running)
   python3 mathuni.py stop              stop the web app on port 18765 (and --db for Neo4j)
+  python3 mathuni.py explain ...       run the explainer swarm (python3 mathuni.py explain -h)
   python3 mathuni.py version
 """
 import argparse, json, os, shutil, socket, subprocess, sys, urllib.request
@@ -112,6 +113,21 @@ def cmd_doctor(_):
             line('WARN', f'port {PORT} in use by another program; run: lsof -nP -iTCP:{PORT} -sTCP:LISTEN')
     if launch_agent_loaded():
         line('INFO', f'LaunchAgent {LABEL} is loaded (it may restart an older copy on port {PORT})')
+    try:
+        sys.path.insert(0, str(ROOT))
+        from swarm.llm import Ollama, Claude
+        from swarm.agents import manim_tools, OUT
+        ok, msg = Ollama().check()
+        line(' OK ' if ok else 'INFO', 'explainer swarm, local model: ' + msg)
+        ok, msg = Claude().check()
+        line(' OK ' if ok else 'INFO', 'explainer swarm, Claude (optional): ' + msg)
+        cmd, latex = manim_tools()
+        line(' OK ' if cmd else 'INFO', 'Manim videos: ' + (cmd[0] if cmd else 'not installed (videos skipped)') +
+             ('' if not cmd else (', LaTeX found' if latex else ', no LaTeX (Text formulas)')))
+        count = len(list(OUT.glob('f*.json'))) if OUT.exists() else 0
+        line('INFO', f'explainers generated: {count} of 373')
+    except Exception as e:
+        line('INFO', f'explainer swarm not checked: {e}')
     print('Doctor: ' + ('FAILED' if fatal else 'ready') + '.')
     return 1 if fatal else 0
 
@@ -179,6 +195,10 @@ def cmd_start(args):
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == 'explain':
+        sys.path.insert(0, str(ROOT))
+        from swarm.run import main as explain
+        return explain(sys.argv[2:])
     p = argparse.ArgumentParser(prog='mathuni.py', description='Mathematical Universe')
     sub = p.add_subparsers(dest='cmd')
     sub.add_parser('doctor', help='check this machine and the install')
