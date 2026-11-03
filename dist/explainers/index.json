@@ -1,0 +1,13 @@
+{
+"schema": 1,
+"updated": "2026-11-03T13:32:52",
+"families": {
+"f005": {
+"headline": "Proof that Catalan's constant is an irrational number",
+"score": 8,
+"model": "ollama:qwen3.6:27b",
+"video": false,
+"difficulty": "research"
+}
+}
+}
