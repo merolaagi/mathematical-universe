@@ -4,6 +4,7 @@ Settings come from environment variables or local/swarm.env (KEY=value lines):
   OLLAMA_HOST        default http://127.0.0.1:11434
   OLLAMA_MODEL       default qwen2.5:14b
   OLLAMA_THINK       default false (turns off Qwen3-style thinking; "auto" leaves the model default)
+  OLLAMA_JSON        default auto (strict JSON mode, dropped automatically if the model starts repeating)
   ANTHROPIC_API_KEY  enables the claude backend
   CLAUDE_MODEL       default claude-sonnet-5-5
 local/.env is NOT used here: it holds only the Neo4j password.
@@ -23,7 +24,7 @@ def settings():
             if line and not line.startswith('#') and '=' in line:
                 k, v = line.split('=', 1)
                 values[k.strip()] = v.strip().strip('"').strip("'")
-    for k in ('OLLAMA_HOST', 'OLLAMA_MODEL', 'OLLAMA_THINK', 'ANTHROPIC_API_KEY', 'CLAUDE_MODEL', 'MANIM_BIN'):
+    for k in ('OLLAMA_HOST', 'OLLAMA_MODEL', 'OLLAMA_THINK', 'OLLAMA_JSON', 'ANTHROPIC_API_KEY', 'CLAUDE_MODEL', 'MANIM_BIN'):
         if os.environ.get(k):
             values[k] = os.environ[k]
     values.setdefault('OLLAMA_HOST', 'http://127.0.0.1:11434')
@@ -77,6 +78,8 @@ class Ollama:
         self.stats = Stats()
         think = s.get('OLLAMA_THINK', 'false').strip().lower()
         self.think = None if think in ('', 'auto', 'default') else think in ('1', 'true', 'yes', 'on')
+        strict = s.get('OLLAMA_JSON', 'auto').strip().lower()
+        self.strict_json = strict not in ('0', 'false', 'no', 'off', 'loose')
 
     def label(self):
         return f'ollama:{self.model}'
@@ -92,23 +95,41 @@ class Ollama:
             return False, f'model {self.model} not pulled. Run: ollama pull {self.model}'
         return True, f'Ollama {self.host}, model {self.model}'
 
-    def complete(self, system, user, json_mode=True, max_tokens=3000, temperature=0.3):
-        body = {'model': self.model, 'stream': False,
-                'messages': [{'role': 'system', 'content': system}, {'role': 'user', 'content': user}],
-                'options': {'temperature': temperature, 'num_ctx': self.ctx, 'num_predict': max_tokens}}
-        if json_mode:
+    def _body(self, system, user, json_mode, max_tokens, temperature):
+        loose = json_mode and not self.strict_json
+        if loose:
+            system += ('\nRespond with a single JSON object only: no prose before or after it, no code fences, '
+                       'and do not repeat yourself.')
+        options = {'temperature': temperature, 'num_ctx': self.ctx, 'num_predict': max_tokens}
+        if loose:
+            options.update({'temperature': max(temperature, 0.5), 'repeat_penalty': 1.1, 'repeat_last_n': 256})
+        body = {'model': self.model, 'stream': False, 'options': options,
+                'messages': [{'role': 'system', 'content': system}, {'role': 'user', 'content': user}]}
+        if json_mode and self.strict_json:
             body['format'] = 'json'
         if self.think is not None:
             body['think'] = self.think
+        return body
+
+    def complete(self, system, user, json_mode=True, max_tokens=3000, temperature=0.3):
         t = time.time()
-        try:
-            r = _post(self.host + '/api/chat', body, {'Content-Type': 'application/json'}, timeout=900)
-        except LLMError as e:
-            if 'think' not in body or not re.search(r'HTTP 400.*think', str(e), re.I | re.S):
-                raise
-            self.think = None
-            body.pop('think')
-            r = _post(self.host + '/api/chat', body, {'Content-Type': 'application/json'}, timeout=900)
+        r = None
+        for attempt in range(4):
+            body = self._body(system, user, json_mode, max_tokens, temperature)
+            try:
+                r = _post(self.host + '/api/chat', body, {'Content-Type': 'application/json'}, timeout=900)
+                break
+            except LLMError as e:
+                msg = str(e)
+                if 'think' in body and re.search(r'HTTP 400.*think', msg, re.I | re.S):
+                    self.think = None
+                elif re.search(r'repeat limit|repetition', msg, re.I) and attempt < 3:
+                    if self.strict_json and json_mode:
+                        self.strict_json = False
+                    else:
+                        temperature = min(temperature + 0.2, 0.9)
+                else:
+                    raise
         self.stats.add(r.get('prompt_eval_count', 0), r.get('eval_count', 0), time.time() - t)
         content = re.sub(r'<think>.*?(</think>|$)', '', r['message'].get('content', ''), flags=re.S).strip()
         if not content and r.get('eval_count', 0) >= max_tokens:
