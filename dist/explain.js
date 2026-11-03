@@ -140,8 +140,64 @@
   const b=el('button','primary x-open',label);b.dataset.label=label;
   const sub=el('p','x-sub',esc(meta.headline)+(meta.video?' · with animation':''));
   const body=el('div','x-body');b.onclick=()=>open(fid,body,b);
-  wrap.append(b,sub,body);anchor.before(wrap);
+  const t=el('button','x-tour','▶ Guided tour');t.onclick=()=>tour(fid);
+  const row=el('div','x-row');row.append(b,t);
+  wrap.append(row,sub,body);anchor.before(wrap);
  }
- window.mathuniExplain={mount,compile};
+ async function getData(fid){let d=cache.get(fid);if(!d){const r=await fetch('explainers/'+fid+'.json',{cache:'no-cache'});if(!r.ok)throw Error('missing');d=await r.json();cache.set(fid,d)}return d}
+
+ // Guided tour: an overlay that walks through the explainer scene by scene, with optional narration.
+ function speakable(s){return String(s||'').replace(/\$\$?([^$]*)\$\$?/g,(_,m)=>' '+m.replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g,'$1 over $2').replace(/\^\{?2\}?/g,' squared').replace(/\^\{?3\}?/g,' cubed').replace(/\^/g,' to the power ').replace(/_\{?([^}\s]*)\}?/g,' sub $1').replace(/\\(le|leq)\b/g,' at most ').replace(/\\(ge|geq)\b/g,' at least ').replace(/\\ne(q)?\b/g,' not equal to ').replace(/\\sum/g,' the sum ').replace(/\\int/g,' the integral ').replace(/\\infty/g,' infinity ').replace(/\\to/g,' tends to ').replace(/\\in\b/g,' in ').replace(/\\([a-zA-Z]+)/g,' $1 ').replace(/[{}\\]/g,' ').replace(/=/g,' equals ').replace(/</g,' less than ').replace(/>/g,' greater than ')+' ').replace(/\s+/g,' ').trim()}
+ function scenes(d){
+  const u=d.untangled||{},t=d.intuition||{},out=[],ws=(d.widgets||[]).slice(),paras=t.intuition||[];
+  out.push({kind:'title',say:[u.headline,t.hook].filter(Boolean).join('. '),build:s=>{s.append(el('p','tour-eyebrow',esc(d.subject||'')),el('h2','tour-h',esc(u.headline)),el('p','tour-hook',esc(t.hook)))}});
+  if(u.key_equation){const syms=u.symbols||[];out.push({kind:'equation',say:'Here is the key equation. '+syms.map(s=>speakable('$'+s.symbol+'$')+' means '+s.meaning).join('. '),steps:syms.length,build:(s,ctl)=>{s.append(el('p','tour-eyebrow','THE KEY EQUATION'));const eq=tex(u.key_equation,true);eq.className='tour-eq';s.append(eq);const row=el('div','tour-syms');syms.forEach(x=>{const c=el('div','tour-sym');const a=el('span','tour-sym-k');a.append(tex(x.symbol));c.append(a,el('span','',esc(x.meaning)));row.append(c)});s.append(row);ctl.reveal=[...row.children]}})}
+  if((u.given||[]).length||(u.concludes||[]).length)out.push({kind:'gc',say:'What we start with: '+(u.given||[]).map(speakable).join('; ')+'. What we conclude: '+(u.concludes||[]).map(speakable).join('; '),build:(s,ctl)=>{s.append(el('p','tour-eyebrow','UNTANGLED'),el('p','tour-core',esc(u.core_statement)));const g=el('div','tour-gc');const L=el('div','tour-card','<b>Given</b>'),R=el('div','tour-card','<b>Concludes</b>');L.append(list(u.given));R.append(list(u.concludes));g.append(L,el('div','tour-arrow','→'),R);s.append(g);ctl.reveal=[L,g.children[1],R]}});
+  paras.forEach((p,i)=>{const w=ws.shift();out.push({kind:'intuition',say:speakable(p),widget:w,build:(s,ctl)=>{s.append(el('p','tour-eyebrow',`THE INTUITION · ${i+1} OF ${paras.length}`));const grid=el('div',w?'tour-split':'');grid.append(el('p','tour-p',esc(p)));if(w){const box=WIDGETS[w.type]?.(w);if(box){grid.append(box);ctl.widget=box}}s.append(grid)}})});
+  ws.forEach(w=>out.push({kind:'widget',say:speakable(w.title+'. '+w.caption),build:(s,ctl)=>{s.append(el('p','tour-eyebrow','PLAY WITH IT'));const box=WIDGETS[w.type]?.(w);if(box){box.classList.add('tour-wide');s.append(box);ctl.widget=box}}}));
+  if(d.video)out.push({kind:'video',say:'',build:(s,ctl)=>{s.append(el('p','tour-eyebrow','ANIMATION'));const v=el('video','tour-video');Object.assign(v,{src:d.video,controls:true,playsInline:true});s.append(v);ctl.video=v}});
+  if(t.analogy)out.push({kind:'analogy',say:speakable(t.analogy),build:s=>{s.append(el('p','tour-eyebrow','AN ANALOGY'),el('p','tour-analogy',esc(t.analogy)))}});
+  if(t.why_it_matters)out.push({kind:'why',say:'Why it matters. '+speakable(t.why_it_matters),build:s=>{s.append(el('p','tour-eyebrow','WHY IT MATTERS'),el('p','tour-p tour-big',esc(t.why_it_matters)))}});
+  const ex=t.explore||[];out.push({kind:'end',say:ex.length?'Questions to chase next. '+ex.map(speakable).join(' '):'That is the idea.',build:(s,ctl)=>{s.append(el('p','tour-eyebrow','YOUR TURN'),el('h2','tour-h','Questions to chase next'));s.append(list(ex,'tour-list'));if((u.foundations||[]).length&&typeof nodes!=='undefined'){const row=el('div','x-chips');u.foundations.forEach(id=>{const n=nodes.get(id);if(!n)return;const b=el('button','x-chip',esc(n.title));b.onclick=()=>{ctl.close();try{visible.add(id);select(id)}catch{}};row.append(b)});if(row.children.length)s.append(el('p','tour-eyebrow','LEARN THESE FIRST'),row)}s.append(el('p','extraction tour-badge',`AI-generated teaching draft (${esc(d.model)}). Not verified against the proof.`))}});
+  return out}
+ function animateWidget(box){
+  if(!box)return;const play=[...box.querySelectorAll('.xw-controls button')].find(b=>/Play/.test(b.textContent));if(play){play.click();return}
+  const r=box.querySelector('.xw-slider input[type=range]');if(!r)return;const lo=+r.min,hi=+r.max,start=+r.value,T=5200,t0=performance.now();
+  (function step(now){if(!box.isConnected)return;const k=Math.min(1,(now-t0)/T),v=k<.5?start+(hi-start)*(k*2):hi-(hi-lo)*((k-.5)*2);r.value=v;r.dispatchEvent(new Event('input'));if(k<1)requestAnimationFrame(step);else{r.value=start;r.dispatchEvent(new Event('input'))}})(t0)}
+ let tourEl=null;
+ async function tour(fid){
+  let d;try{d=await getData(fid)}catch{return}
+  const list_=scenes(d);let i=0,playing=true,voice=true,timer=null,revealTimer=null;const synth=window.speechSynthesis;
+  tourEl?.remove();const ov=el('div','tour');tourEl=ov;ov.setAttribute('role','dialog');ov.setAttribute('aria-modal','true');ov.setAttribute('aria-label','Guided tour: '+(d.untangled?.headline||''));
+  const top=el('div','tour-top'),bar=el('div','tour-bar'),fill=el('div','tour-fill');bar.append(fill);
+  const close=el('button','tour-x','Close ✕');top.append(el('span','tour-brand','∴ Guided tour'),bar,close);
+  const stage=el('div','tour-stage'),nav=el('div','tour-nav');
+  const prev=el('button','','← Back'),pp=el('button','primary','❚❚ Pause'),next=el('button','','Next →'),vo=el('button','','🔊 Voice on'),count=el('span','tour-count');
+  nav.append(prev,pp,next,vo,count);ov.append(top,stage,nav);document.body.append(ov);document.body.classList.add('tour-open');
+  const ctl={close:()=>end()};
+  function stopAll(){clearTimeout(timer);clearInterval(revealTimer);try{synth?.cancel()}catch{}}
+  function end(){stopAll();ov.remove();tourEl=null;document.body.classList.remove('tour-open');document.removeEventListener('keydown',keys)}
+  function advance(){if(i<list_.length-1)show(i+1);else{playing=false;pp.textContent='▶ Replay'}}
+  function show(k){stopAll();i=Math.max(0,Math.min(list_.length-1,k));const sc=list_[i];ctl.reveal=null;ctl.widget=null;ctl.video=null;
+   const s=el('div','tour-scene tour-'+sc.kind);stage.replaceChildren(s);sc.build(s,ctl);typeset(s);
+   fill.style.width=((i+1)/list_.length*100)+'%';count.textContent=`${i+1} / ${list_.length}`;prev.disabled=i===0;
+   const reveal=ctl.reveal||[];reveal.forEach(e=>e.classList.add('tour-hide'));
+   const words=(sc.say||'').split(/\s+/).length,readMs=Math.max(4500,words*330);
+   if(reveal.length){let r=0;const gap=Math.max(900,readMs/(reveal.length+1));reveal[r++]?.classList.remove('tour-hide');revealTimer=setInterval(()=>{if(r>=reveal.length){clearInterval(revealTimer);return}reveal[r++].classList.remove('tour-hide')},gap)}
+   if(ctl.widget)setTimeout(()=>animateWidget(ctl.widget),700);
+   if(!playing){reveal.forEach(e=>e.classList.remove('tour-hide'));clearInterval(revealTimer);return}
+   if(ctl.video){ctl.video.play().catch(()=>{});ctl.video.onended=()=>playing&&advance();return}
+   const extra=ctl.widget?3500:0;
+   const t0=performance.now();
+   if(voice&&synth&&sc.say){const u=new SpeechSynthesisUtterance(sc.say);u.rate=1;let done=false;const go=()=>{if(done)return;done=true;timer=setTimeout(()=>playing&&advance(),Math.max(900,readMs-(performance.now()-t0))+extra)};u.onend=go;u.onerror=go;synth.speak(u);timer=setTimeout(go,readMs*1.8+4000)}
+   else timer=setTimeout(()=>playing&&advance(),readMs+extra)}
+  function toggle(){if(!playing&&i===list_.length-1){playing=true;pp.textContent='❚❚ Pause';show(0);return}playing=!playing;pp.textContent=playing?'❚❚ Pause':'▶ Play';if(playing)show(i);else stopAll()}
+  function keys(e){if(e.key==='Escape')end();else if(e.key==='ArrowRight')show(i+1);else if(e.key==='ArrowLeft')show(i-1);else if(e.key===' '&&e.target.tagName!=='BUTTON'&&e.target.tagName!=='INPUT'){e.preventDefault();toggle()}}
+  document.addEventListener('keydown',keys);
+  close.onclick=end;prev.onclick=()=>show(i-1);next.onclick=()=>show(i+1);pp.onclick=toggle;
+  if(!synth){voice=false;vo.disabled=true;vo.textContent='No voice'}
+  vo.onclick=()=>{voice=!voice;vo.textContent=voice?'🔊 Voice on':'🔇 Voice off';if(!voice)try{synth.cancel()}catch{};if(playing)show(i)};
+  close.focus();show(0)}
+ window.mathuniExplain={mount,compile,tour};
  loadIndex();
 })();
