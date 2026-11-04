@@ -17,20 +17,8 @@ SETTINGS_FILE = ROOT / 'local' / 'swarm.env'
 
 
 def settings():
-    values = {}
-    if SETTINGS_FILE.exists():
-        for line in SETTINGS_FILE.read_text().splitlines():
-            line = line.strip()
-            if line and not line.startswith('#') and '=' in line:
-                k, v = line.split('=', 1)
-                values[k.strip()] = v.strip().strip('"').strip("'")
-    for k in ('OLLAMA_HOST', 'OLLAMA_MODEL', 'OLLAMA_THINK', 'OLLAMA_JSON', 'ANTHROPIC_API_KEY', 'CLAUDE_MODEL', 'MANIM_BIN'):
-        if os.environ.get(k):
-            values[k] = os.environ[k]
-    values.setdefault('OLLAMA_HOST', 'http://127.0.0.1:11434')
-    values.setdefault('OLLAMA_MODEL', 'qwen2.5:14b')
-    values.setdefault('CLAUDE_MODEL', 'claude-sonnet-5-5')
-    return values
+    from .settings import load
+    return load()
 
 
 class LLMError(RuntimeError):

@@ -39,7 +39,9 @@ python3 scripts/release.py
 
 Runs resume where they stopped; failures are listed in `local/swarm-failures.json`. Use `--model` for another Ollama model, `--no-videos` to skip Manim, `--min-score` to change the revision threshold.
 
-Optional Claude API: put `ANTHROPIC_API_KEY=...` (and optionally `CLAUDE_MODEL=...`) in `local/swarm.env` (not `local/.env`, which holds only the Neo4j password). Then `--backend claude`, or `--escalate claude` to redo only local drafts scoring below `--min-score`, or `--rescore-below 6 --backend claude` to upgrade existing low scorers.
+Settings: open http://127.0.0.1:18765 on the Mac and press **⚙ Settings** (main model, Claude key and model, Ollama model, threshold, videos, workers), or use `python3 mathuni.py settings KEY=value`. They are stored in `local/swarm.env` (owner-only; not `local/.env`, which holds only the Neo4j password). The panel and its API answer only local requests: the public domain, Cloudflare headers and cross-site requests get 404/403, and the key is never sent back to the browser.
+
+Optional Claude API: set the key in Settings. Then `--backend claude`, or `--escalate claude` to redo only local drafts scoring below `--min-score`, or `--rescore-below 6 --backend claude` to upgrade existing low scorers.
 
 Videos (optional): `brew install pango cairo pkg-config`, then a Python 3.12 virtualenv at `../.venv-manim` with `pip install manim`; the swarm finds it automatically (or set `MANIM_BIN` in `local/swarm.env`). Without LaTeX the animator uses plain-text formulas.
 

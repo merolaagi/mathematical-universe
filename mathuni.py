@@ -7,6 +7,7 @@
   python3 mathuni.py start --neo4j     require Neo4j (fails if Docker is not running)
   python3 mathuni.py stop              stop the web app on port 18765 (and --db for Neo4j)
   python3 mathuni.py explain ...       run the explainer swarm (python3 mathuni.py explain -h)
+  python3 mathuni.py settings [K=V]    show or change swarm settings (also in the app at http://127.0.0.1:18765)
   python3 mathuni.py version
 """
 import argparse, json, os, shutil, socket, subprocess, sys, urllib.request
@@ -195,6 +196,10 @@ def cmd_start(args):
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == 'settings':
+        sys.path.insert(0, str(ROOT))
+        from swarm.settings import cli
+        return cli(sys.argv[2:])
     if len(sys.argv) > 1 and sys.argv[1] == 'explain':
         sys.path.insert(0, str(ROOT))
         from swarm.run import main as explain

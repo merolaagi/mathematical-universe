@@ -67,10 +67,10 @@ def fmt(sec):
 def main(argv=None):
     p = argparse.ArgumentParser(prog='mathuni.py explain', description='Explainer swarm')
     p.add_argument('--families', default='all')
-    p.add_argument('--backend', default='ollama', choices=['ollama', 'claude', 'mock'])
+    p.add_argument('--backend', choices=['ollama', 'claude', 'mock'], help='default: SWARM_BACKEND setting')
     p.add_argument('--model', help='override the model name for the backend')
-    p.add_argument('--escalate', choices=['claude'], help='redo drafts scoring below --min-score with this backend')
-    p.add_argument('--min-score', type=float, default=6)
+    p.add_argument('--escalate', choices=['claude', 'none'], help='redo drafts scoring below --min-score (default: SWARM_ESCALATE setting)')
+    p.add_argument('--min-score', type=float, help='default: SWARM_MIN_SCORE setting')
     p.add_argument('--rescore-below', type=float, help='only redo existing explainers scoring below this')
     p.add_argument('--videos', dest='videos', action='store_true', default=None)
     p.add_argument('--no-videos', dest='videos', action='store_false')
@@ -79,6 +79,19 @@ def main(argv=None):
     p.add_argument('--estimate', type=int, metavar='N', help='time N families into local/estimate and project the full run')
     p.add_argument('--check', action='store_true', help='only check backends and tools')
     a = p.parse_args(argv)
+    from .settings import load as load_settings
+    cfg = load_settings()
+    a.backend = a.backend or cfg['SWARM_BACKEND']
+    a.escalate = a.escalate or cfg['SWARM_ESCALATE']
+    a.escalate = None if a.escalate in (None, '', 'none') or a.escalate == a.backend else a.escalate
+    a.min_score = a.min_score if a.min_score is not None else float(cfg['SWARM_MIN_SCORE'])
+    if a.videos is None and cfg['SWARM_VIDEOS'] in ('on', 'off'):
+        a.videos = cfg['SWARM_VIDEOS'] == 'on'
+    if not a.workers and int(float(cfg['SWARM_WORKERS'] or 0)):
+        a.workers = int(float(cfg['SWARM_WORKERS']))
+    print(f'Settings: backend {a.backend}, escalate {a.escalate or "none"}, min score {a.min_score:g}, '
+          f'videos {"auto" if a.videos is None else ("on" if a.videos else "off")} (change with the app\'s Settings panel '
+          'or python3 mathuni.py settings)')
 
     llm = make(a.backend, a.model)
     ok, msg = llm.check()
@@ -135,8 +148,15 @@ def main(argv=None):
         result = explain_family(fid, llm, concepts, videos=videos, min_score=a.min_score, log=log, out=out)
         if esc and result['critic']['score'] < a.min_score:
             log(f'  {fid} scored {result["critic"]["score"]}; escalating to {esc.label()}')
-            result = explain_family(fid, esc, concepts, videos=videos and not result.get('video'), min_score=a.min_score,
-                                    log=log, out=out)
+            try:
+                better = explain_family(fid, esc, concepts, videos=videos and not result.get('video'), min_score=a.min_score,
+                                        log=log, out=out)
+                if not better.get('video') and result.get('video'):
+                    better['video'] = result['video']
+                if better['critic']['score'] >= result['critic']['score']:
+                    result = better
+            except LLMError as e:
+                log(f'  {fid} escalation failed, keeping the local draft: {str(e)[:160]}')
         tmp = out / f'{fid}.json.tmp'
         tmp.write_text(json.dumps(result, ensure_ascii=False, indent=1))
         os.replace(tmp, out / f'{fid}.json')
